@@ -32,9 +32,6 @@
 
 #define nullptr   NULL
 
-#define long      int64_t
-#define ulong     uint64_t
-
 namespace noType
 {
  class untyped : public std::vector<untyped*>, public std::map<std::string, untyped*>, public std::string
@@ -45,6 +42,8 @@ namespace noType
   typedef std::vector<untyped*>            typeVector;
   typedef std::map<std::string, untyped*>  typeMap;
   typedef unsigned char                    uchar;
+  typedef long                             int64_t;
+  typedef unsigned long                    uint64_t;
 
  public:
   inline static char const* version() {return "0.2";};
