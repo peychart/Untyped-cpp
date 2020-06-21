@@ -32,6 +32,8 @@
 
 #define nullptr   NULL
 
+#define long      int64_t
+#define ulong     uint64_t
 
 namespace noType
 {
@@ -65,6 +67,7 @@ namespace noType
   untyped ( size_t s, void const * ); // 15
   untyped ( untyped        const & );
   untyped ( std::istream         & );
+
   virtual ~untyped() {clear();};
 
   inline size_t                       type        ( void )                const {return (size_t)_type;};
