@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+  <meta name="GENERATOR" content="KompoZer-0.8a4"><title>C++ UnTyped mini Howto (Français)</title>
+  
+  <link href="GNUdb++%20miniHowto-1.fr.html" rel="next"></head><body>
+<a href="miniHowto-2.en.html">Next</a>
+<a href="miniHowto.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; (<a href="miniHowto-1.fr.html"><span style="font-weight: bold;">Français</span></a> - English)
+<hr>
+<h2><a name="S1"><span style="text-decoration: underline;">1. Introduction to GNU UnTyped++:</span>
+</a></h2>
+
+<div style="margin-left: 40px;">This library is under the licence <a href="http://www.gnu.org/licenses/">GNU version 3</a>.<br>
+<br>
+[...]<br>
+</div>
+
+
+<br>
+
+<h2><a name="S2"><span style="text-decoration: underline;">2. Overview:</span>
+</a></h2>
+
+<div style="margin-left: 40px;">GNU UnTyped++ is a
+library of routines which handles C ++ types in a multidimensional object.<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">2.1 The class "untyped":</span><br>
+<br>
+<span style="text-decoration: underline;">Use example:</span><big><small><span style="text-decoration: underline;"></span></small></big><br>
+
+<div style="margin-left: 80px;"><small style="font-style: italic;">
+<small style="font-style: italic;"><span style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 153, 0);">#include&lt;fstream&gt;</span><br style="color: rgb(0, 153, 0);">
+<span style="color: rgb(0, 153, 0);">#include</span></span></small></small><small style="font-style: italic;"><small style="font-style: italic;"><span style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 153, 0);">&lt;</span></span></small></small><small style="font-style: italic;"><small style="font-style: italic;"><span style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 153, 0);">untyped.h</span></span></small></small><small style="font-style: italic;"><small style="font-style: italic;"><span style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 153, 0);">&gt;</span></span></small></small><small style="font-style: italic;"><small style="font-style: italic;"><span style="color: rgb(0, 0, 153);"><span style="color: rgb(0, 153, 0);"></span><br>
+using namespace</span> UnTyped;<br>
+</small>
+<br>
+
+<small style="font-style: italic;"><span style="color: rgb(0, 0, 153);">int</span></small><small> main<span style="color: red;">()</span></small></small><small style="font-style: italic;"><br>
+
+<small><span style="color: red;">{</span>&nbsp;&nbsp;&nbsp; <span style="color: rgb(153, 153, 153);">// Test of the class "untyped" + serialisation:</span></small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; std::ifstream&nbsp;&nbsp;&nbsp; infile <span style="color: red;">(</span><span style="color: rgb(51, 51, 255);"> </span></small></small><small style="font-style: italic;"><small><span style="color: rgb(51, 102, 255);">"serialize.db"</span></small></small><small style="font-style: italic;"><small><span style="color: rgb(51, 51, 255);"></span>, std::ifstream::binary <span style="color: red;">)</span>;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; std::ofstream&nbsp;&nbsp;&nbsp; outfile<span style="color: red;">(</span> <span style="color: rgb(51, 102, 255);">"serialize.db"</span>, std::ifstream::trunc|std::ofstream::binary <span style="color: red;">)</span>;</small></small><small style="font-style: italic;"><br>
+
+<small><br>
+&nbsp;&nbsp;&nbsp; untyped&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mydata;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; </small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> </small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small>mydata <span style="color: rgb(204, 0, 0);">=</span> "This is a te"</small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small> </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">+</span></small></small><small style="font-style: italic;"><small> "st..." </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>.serialize( outfile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; </small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> </small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small>mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">=</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(255, 204, 102);">'</span></small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 153, 51);">'B'</span></small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(204, 0, 0);">+</span> </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 153, 51);">'a'</span></small></small><small style="font-style: italic;"><small><span style="color: rgb(255, 204, 51);"></span> - <span style="color: rgb(204, 153, 51);">'A'</span> </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>.serialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> outfile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; </small></small><small style="font-style: italic;"><small><span style="color: red;">( </span></small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small>mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">=</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(204, 51, 204);">62</span></small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small> </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">+</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(204, 51, 204);">4</span> </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>.serialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> outfile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; </small></small><small style="font-style: italic;"><small><span style="color: red;">( </span></small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small>mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">=</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(204, 51, 204);">6.594</span></small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(204, 0, 0);">/</span> <span style="color: rgb(204, 51, 204);">2.1</span> </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>.serialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> outfile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small><span style="color: red;"></span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; </small></small><small style="font-style: italic;"><small><span style="color: red;">( </span></small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small>mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">=</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(0, 0, 153);">false</span></small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small> </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">+</span></small></small><small style="font-style: italic;"><small> <span style="color: rgb(0, 0, 153);">true</span> </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>.serialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> outfile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; outfile.close</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<br>
+
+<small>&nbsp;&nbsp;&nbsp; mydata.deserialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> infile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>; std::cout <span style="color: rgb(204, 0, 0);">&lt;&lt;</span> mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> std::endl;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; mydata.deserialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> infile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>; std::cout </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> std::endl;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; mydata.deserialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> infile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>; std::cout </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> std::endl;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; mydata.deserialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> infile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>; std::cout </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> std::endl;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; mydata.deserialize</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small> infile </small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>; std::cout </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> mydata </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 0, 0);">&lt;&lt;</span></small></small><small style="font-style: italic;"><small> std::endl;</small></small><small style="font-style: italic;"><br>
+
+<small>&nbsp;&nbsp;&nbsp; infile.close</small></small><small style="font-style: italic;"><small><span style="color: red;">(</span></small></small><small style="font-style: italic;"><small><span style="color: red;">)</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<br>
+
+<small>&nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 0, 153);">return</span> </small></small><small style="font-style: italic;"><small><span style="color: rgb(204, 51, 204);">0</span></small></small><small style="font-style: italic;"><small>;</small></small><small style="font-style: italic;"><br>
+
+<small style="color: red;">} <br>
+<br style="color: black;">
+</small></small><small><small style="color: red;"><span style="color: black;">--&gt;</span><br style="color: black;">
+<span style="color: black;">This is a test...</span><br style="color: black;">
+<span style="color: black;">b</span><br style="color: black;">
+<span style="color: black;">66</span><br style="color: black;">
+<span style="color: black;">3.14</span><br style="color: black;">
+<span style="color: black;">1</span></small></small><br>
+</div>
+
+<big><br style="font-style: italic;">
+<small><small><small><span style="text-decoration: underline;">Nota:</span>
+In fact, for the man on the moon, I can't say anything, but about the
+basic language of the 80's, it seems possible that it was actually
+existing ...</small></small><br>
+</small>
+</big><br>
+</div>
+<br>
+
+<hr><a href="miniHowto-2.en.html">Next</a>
+<a href="miniHowto.en.html">Previous</a> <a href="miniHowto.en.html">Summary</a>
+
+</body></html>
