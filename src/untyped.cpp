@@ -68,16 +68,8 @@ namespace noType
     _set( sizeof(int64_t), reinterpret_cast<char const *>( &v ) );
   }
 
-  untyped::untyped ( long const v )           : _type(10) {
-    _set( sizeof(LONG),  reinterpret_cast<char const *>( &v ) );
-  }
-
   untyped::untyped( uint64_t const v )        : _type(11) {
     _set( sizeof(uint64_t),  reinterpret_cast<char const *>( &v ) );
-  }
-
-  untyped::untyped ( unsigned long const v )  : _type(11) {
-    _set( sizeof(unsigned LONG), reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( float const v )           : _type(12) {
