@@ -1,7 +1,7 @@
 /*           untyped C++ (Version 0.1 - 2012/07)
     <https://github.com/peychart/untyped-cpp>
 
-    Copyright (C) 2012  -  peychart
+    Copyright (C) 2017  -  peychart
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -101,23 +101,23 @@ namespace noType
   }
 
   untyped& untyped::assign( untyped const &v ) {
-    clearVector(); _set( typeVector(v) );
-    clearMap();    _set( typeMap(v) );
+    clearVector(); _set( vectorType(v) );
+    clearMap();    _set( mapType(v) );
     _set( v.size(), v.data() ); _type = v._type;
     return *this;
   }
 
   untyped& untyped::clearVector( void ) {
     while( vectorSize() ) {
-      (typeVector::back())->clear();
-      typeVector::pop_back();
+      vector().back()->clear();
+      vector().pop_back();
     }return *this;
   }
 
   untyped& untyped::clearMap( void ) {
-    for(auto it=typeMap::begin(); it!=typeMap::end(); it++) {
+    for(auto it=map().begin(); it!=map().end(); it++) {
       it->second->clear();
-      typeMap::erase(it);
+      mapType::erase(it);
     }return *this;
   }
 
@@ -220,7 +220,7 @@ namespace noType
       case 12: operator=( static_cast<float>    ( value<float>()    * that.value<float>()    ) ); break;
       case 13: operator=( static_cast<double>   ( value<double>()   * that.value<double>()   ) ); break;
       case 15:{
-        untyped b( *this ); std::string::clear();
+        std::string::clear();
         for( size_t i(0), len=size(); i<len; i++,i++ )
           std::string::insert( i, 1, ((std::string)that).at(i) );
         }break;
@@ -385,13 +385,17 @@ namespace noType
       case 15: _writeSize( out, this->size() ); out.write( this->data(), this->size() );
     }if ( meta == 1 || meta == 2 ) {
       _writeSize( out, this->vectorSize() );
-      for( auto it=typeVector::begin(); it!=typeVector::end(); it++ )
-        (*it)->serialize( out );
+      for( auto x : vector() )
+        x->serialize( out );
     }if ( meta == 1 || meta == 3 ) {
       _writeSize( out, this->mapSize() );
-      for( auto it=typeMap::begin(); it!=typeMap::end(); it++ ) {
+    /*for( auto it=mapType::begin(); it!=mapType::end(); it++ ) {
         untyped( it->first ).serialize( out );
         it->second->serialize( out );
+      }*/
+      for( auto x : map() ) {
+        untyped( x.first ).serialize( out );
+        x.second->serialize( out );
     } }
     return *this;
   }
@@ -423,9 +427,9 @@ namespace noType
       case 13: for(size_t i(0); i<sizeof(double  ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
       case 15: _readSize( in, len ); while( len--  && in.read(&c, sizeof(char)) ) std::string::operator+=(c); break;
     }switch( meta ) {
-      case 1: clearVector(); _readSize(in, len); while(len--)  untyped::typeVector::push_back( new untyped( untyped().deserialize( in ) ) );        // read dataVector...
+      case 1: clearVector(); _readSize(in, len); while(len--)  vector().push_back( new untyped( untyped().deserialize( in ) ) );        // read dataVector...
       case 3: clearMap();    _readSize(in, len); while(len--) {untyped d; d.deserialize( in ); operator[](d)=untyped().deserialize( in );}   break; // read dataMap
-      case 2: clearVector(); _readSize(in, len); while(len--)  untyped::typeVector::push_back( new untyped( untyped().deserialize( in ) ) ); break; // read dataVector
+      case 2: clearVector(); _readSize(in, len); while(len--)  vector().push_back( new untyped( untyped().deserialize( in ) ) ); break; // read dataVector
     }return *this;
   }
 

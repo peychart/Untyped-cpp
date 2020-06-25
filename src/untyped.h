@@ -30,8 +30,6 @@
 #include <sstream>
 #include <cstdlib>
 
-#define nullptr   NULL
-
 namespace noType
 {
  class untyped : public std::vector<untyped*>, public std::map<std::string, untyped*>, public std::string
@@ -39,8 +37,8 @@ namespace noType
 
  protected:
   typedef std::pair<std::string, untyped*> typePair;
-  typedef std::vector<untyped*>            typeVector;
-  typedef std::map<std::string, untyped*>  typeMap;
+  typedef std::vector<untyped*>            vectorType;
+  typedef std::map<std::string, untyped*>  mapType;
   typedef unsigned char                    uchar;
   typedef long                             int64_t;
   typedef unsigned long                    uint64_t;
@@ -71,8 +69,8 @@ namespace noType
 
   inline size_t                       type        ( void )                const {return (size_t)_type;};
   inline size_t                       size        ( void )                const {return std::string::size();};
-  inline size_t                       vectorSize  ( void )                const {return typeVector::size();};
-  inline size_t                       mapSize     ( void )                const {return typeMap::size();};
+  inline size_t                       vectorSize  ( void )                const {return vectorType::size();};
+  inline size_t                       mapSize     ( void )                const {return mapType::size();};
   inline bool                         empty       ( void )                const {return( !size() && !vectorSize() && !mapSize() );};
 
   inline untyped&                     clear       ( void )                      {return clearValue().clearMap().clearVector();};
@@ -81,6 +79,8 @@ namespace noType
   untyped&                            clearMap    ( void );
   inline char const *                 data        ( void )                const {return std::string::data();};
   untyped&                            erase       ( size_t pos, size_t len=-1L ){if(size() && !_type) std::string::erase(pos, len); return *this;};
+  inline vectorType&                  vector      ( void )                      {return (*((vectorType*)this));};
+  inline mapType&                     map         ( void )                      {return (*((mapType*)this));};
 
   untyped&                            assign      ( untyped const &  );
   template<class T> untyped&          assign      ( T       const &v )          {return assign( untyped( v ) );};
@@ -167,13 +167,13 @@ namespace noType
   untyped&                            operator()     ( std::istream &in )       {return deserialize( in );};
 
   inline untyped&                     operator[] ( size_t n )                   {//clearMap();
-    for(size_t i(vectorSize()); i<=n; i++ ) {typeVector::push_back(new untyped);} return *(typeVector::operator[](n));};
+    for(size_t i(vectorSize()); i<=n; i++ ) {vectorType::push_back(new untyped);} return *(vectorType::operator[](n));};
   inline untyped&                     operator[] ( std::string s )              {//clearVector();
-    typeMap::const_iterator it=typeMap::find(s); if(it!=typeMap::end()) return *it->second; return *(typeMap::operator[](s)=new untyped);};
+    mapType::const_iterator it=mapType::find(s); if(it!=mapType::end()) return *it->second; return *(mapType::operator[](s)=new untyped);};
 
   friend std::ostream&                operator<< ( std::ostream &, untyped const & );
-  friend std::ostream&                operator<< ( std::ostream &, typeMap const & );
-  friend std::ostream&                operator<< ( std::ostream &, typeVector const & );
+  friend std::ostream&                operator<< ( std::ostream &, mapType const & );
+  friend std::ostream&                operator<< ( std::ostream &, vectorType const & );
   friend std::ostream&                operator<< ( std::ostream &out, typePair const &that ) {return out << that.first << ": " << that.second;};
 
   inline bool                         isBinaryMode    ( void )            const {return( !untyped::json );};
@@ -209,8 +209,8 @@ namespace noType
   uchar                  _type; /// WARNING: type must be < 32 [5+3 bits shared with desc(structure) in a char for the serialization methods...]
 
   inline void                         _set            ( size_t l,char const* v ){std::string::assign(v, l);};
-  inline void                         _set            ( typeVector   const &v ) {for(size_t i(0); i<v.size(); i++) operator[](i)= *(v[i]);};
-  inline void                         _set            ( typeMap      const &v ) {for(typeMap::const_iterator it=v.begin(); it!=v.end(); it++) operator[](it->first)= *(it->second);};
+  inline void                         _set            ( vectorType   const &v ) {for(size_t i(0); i<v.size(); i++) operator[](i)= *(v[i]);};
+  inline void                         _set            ( mapType      const &v ) {for(mapType::const_iterator it=v.begin(); it!=v.end(); it++) operator[](it->first)= *(it->second);};
   static void                         _writeTypeAndStructure( std::ostream&, uchar, uchar const & );
   static inline void                  _writeSize      ( std::ostream& o, size_t s ) {o.write( hton(s), sizeof(s) );};
   static uchar                        _readTypeAndStructure( std::istream&, uchar & );
@@ -236,5 +236,7 @@ namespace noType
  };
 
 }
+
 using namespace noType;
+
 #endif
