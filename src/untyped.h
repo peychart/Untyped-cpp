@@ -80,7 +80,9 @@ namespace noType
   inline char const *                 data        ( void )                const {return std::string::data();};
   untyped&                            erase       ( size_t pos, size_t len=-1L ){if(size() && !_type) std::string::erase(pos, len); return *this;};
   inline vectorType&                  vector      ( void )                      {return (*((vectorType*)this));};
+  inline untyped&                     vector      ( size_t i )                  {return *vector()[i];};
   inline mapType&                     map         ( void )                      {return (*((mapType*)this));};
+  inline untyped&                     map         ( std::string s )             {return *map()[s];};
 
   untyped&                            assign      ( untyped const &  );
   template<class T> untyped&          assign      ( T       const &v )          {return assign( untyped( v ) );};
