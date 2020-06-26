@@ -157,17 +157,15 @@ namespace noType
   template<class T> inline untyped    operator|   ( T const &that ) const       {return  operator| ( untyped( that ) );};
   inline untyped                      operator|   ( untyped const &that ) const {return  untyped ( *this ).operator|=( that );};
 
-  virtual untyped&                    serialize      ( std::string s )          {std::ostringstream o(s); return(isJsonMode() ?serializeJson(o)   :serialize(o));};
   virtual untyped&                    serialize      ( std::ostream & );
-  virtual untyped&                    deserialize    ( std::string s )          {std::istringstream i(s); return(isJsonMode() ?deserializeJson(i) :deserialize(i));};
-  virtual untyped&                    deserialize    ( std::istream & );
+  virtual untyped&                    serializeJson  ( std::ostream &o )        {size_t b(untyped::json); jsonMode(); o << *this; untyped::json=b; return *this;};
 
-  virtual untyped&                    serializeJson  ( std::string s )          {std::ostringstream o(s); return serializeJson(o);};
-  virtual untyped&                    serializeJson  ( std::ostream &o )        {size_t b(untyped::json); if(isBinaryMode()) jsonMode(); o << *this; untyped::json=b; return *this;};
-  virtual untyped&                    deserializeJson( std::string s )          {std::istringstream i(s); return deserializeJson(i);};
+  virtual untyped&                    deserialize    ( std::string  s )         {std::istringstream i(s); return(isJsonMode() ?deserializeJson(i) :deserialize(i));};
+  virtual untyped&                    deserialize    ( std::istream & );
+  virtual untyped&                    deserializeJson( std::string  s )         {std::istringstream i(s); return deserializeJson(i);};
   virtual untyped&                    deserializeJson( std::istream & );
-  inline untyped&                     operator()     ( std::string s )          {std::istringstream i(s); return deserialize( i );};
-  inline untyped&                     operator()     ( std::istream &i )       {return deserialize( i );};
+  inline untyped&                     operator()     ( std::string  s )         {std::istringstream i(s); return deserialize( i );};
+  inline untyped&                     operator()     ( std::istream &i )        {return deserialize( i );};
 
   inline untyped&                     operator[] ( size_t n )                   {//clearMap();
     for(size_t i(vectorSize()); i<=n; i++ ) {vectorType::push_back(new untyped);} return *(vectorType::operator[](n));};
