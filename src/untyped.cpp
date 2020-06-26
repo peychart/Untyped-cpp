@@ -427,9 +427,9 @@ namespace noType
       case 13: for(size_t i(0); i<sizeof(double  ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
       case 15: _readSize( in, len ); while( len--  && in.read(&c, sizeof(char)) ) std::string::operator+=(c); break;
     }switch( meta ) {
-      case 1: clearVector(); _readSize(in, len); while(len--)  vector().push_back( new untyped( untyped().deserialize( in ) ) );        // read dataVector...
-      case 3: clearMap();    _readSize(in, len); while(len--) {untyped d; d.deserialize( in ); operator[](d)=untyped().deserialize( in );}   break; // read dataMap
-      case 2: clearVector(); _readSize(in, len); while(len--)  vector().push_back( new untyped( untyped().deserialize( in ) ) ); break; // read dataVector
+      case 1: clearVector(); _readSize(in, len); while(len--)  vector().push_back( new untyped( untyped().deserialize( in ) ) );                  // read dataVector...
+      case 3: clearMap();    _readSize(in, len); while(len--) {untyped d; d.deserialize( in ); operator[](d)=untyped().deserialize( in );} break; // read dataMap
+      case 2: clearVector(); _readSize(in, len); while(len--)  vector().push_back( new untyped( untyped().deserialize( in ) ) );                  // read dataVector
     }return *this;
   }
 
@@ -580,7 +580,7 @@ namespace noType
   }
 
   untyped& untyped::deserializeJson( std::istream &in ) { //See: https://www.json.org/json-fr.html
-    clear(); char c; while( in.read( &c, 1 ) ) switch(c) {
+    char c; clear(); while( in.read( &c, 1 ) ) switch(c) {
       case '{': (*this) = _getJsonObject(in, c); if(c!='}') clear(); return *this;
       case '[': (*this) = _getJsonArray (in, c); if(c!=']') clear(); return *this;
       case '/': _getJsonComment(in, c);          if(  !c  ) clear(); return *this;
