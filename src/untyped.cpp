@@ -29,27 +29,27 @@ namespace noType
   }
 
   untyped::untyped( bool const v )            : _type( 1) {
-    _set( sizeof(bool), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(bool),     reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( char const v )            : _type( 2) {
-    _set( sizeof(char), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(char),     reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( wchar_t const v )         : _type( 3) {
-    _set( sizeof(wchar_t), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(wchar_t),  reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( int8_t const v )          : _type( 4) {
-    _set( sizeof(int8_t), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(int8_t),   reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( uint8_t const v )         : _type( 5) {
-    _set( sizeof(uint8_t), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(uint8_t),  reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( int16_t const v )         : _type( 6) {
-    _set( sizeof(int16_t), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(int16_t),  reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( uint16_t const v )        : _type( 7) {
@@ -57,31 +57,31 @@ namespace noType
   }
 
   untyped::untyped( int32_t const v )         : _type( 8) {
-    _set( sizeof(int32_t), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(int32_t),  reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( uint32_t const v )        : _type( 9) {
-    _set( sizeof(uint32_t),  reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(uint32_t), reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( int64_t const v )         : _type(10) {
-    _set( sizeof(int64_t), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(int64_t),  reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( uint64_t const v )        : _type(11) {
-    _set( sizeof(uint64_t),  reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(uint64_t), reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( float const v )           : _type(12) {
-    _set( sizeof(float), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(float),    reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( double const v )          : _type(13) {
-    _set( sizeof(double), reinterpret_cast<char const *>( &v ) );
+    _set( sizeof(double),   reinterpret_cast<char const *>( &v ) );
   }
 
   untyped::untyped( char const *v )           : _type(15) {
-    _set( stringSize( v ), reinterpret_cast<char const *>(  v ) );
+    _set( stringSize( v ),  reinterpret_cast<char const *>(  v ) );
   }
 
   untyped::untyped( std::string const &v )    : _type(15) {
@@ -89,7 +89,7 @@ namespace noType
   }
 
   untyped::untyped( size_t s, void const *v ) : _type(15) {
-    _set( s, reinterpret_cast<char const *>(v) );
+    _set( s, reinterpret_cast<char const *>( v ) );
   }
 
   untyped::untyped( untyped const &v )                    {
@@ -123,19 +123,19 @@ namespace noType
 
   bool untyped::operator==( untyped const &that ) const {
     switch( _type ) {
-      case  1: return( value<bool>()     == that.value<bool>()     );
-      case  2: return( value<char>()     == that.value<char>()     );
-      case  3: return( value<wchar_t>()  == that.value<wchar_t>()  );
-      case  4: return( value<int8_t>()   == that.value<int8_t>()   );
-      case  5: return( value<uint8_t>()  == that.value<uint8_t>()  );
-      case  6: return( value<int16_t>()  == that.value<int16_t>()  );
+      case  1: return( value<bool    >() == that.value<bool    >() );
+      case  2: return( value<char    >() == that.value<char    >() );
+      case  3: return( value<wchar_t >() == that.value<wchar_t >() );
+      case  4: return( value<int8_t  >() == that.value<int8_t  >() );
+      case  5: return( value<uint8_t >() == that.value<uint8_t >() );
+      case  6: return( value<int16_t >() == that.value<int16_t >() );
       case  7: return( value<uint16_t>() == that.value<uint16_t>() );
-      case  8: return( value<int32_t>()  == that.value<int32_t>()  );
+      case  8: return( value<int32_t >() == that.value<int32_t >() );
       case  9: return( value<uint32_t>() == that.value<uint32_t>() );
-      case 10: return( value<int64_t>()  == that.value<int64_t>()  );
+      case 10: return( value<int64_t >() == that.value<int64_t >() );
       case 11: return( value<uint64_t>() == that.value<uint64_t>() );
-      case 12: return( value<float>()    == that.value<float>()    );
-      case 13: return( value<double>()   == that.value<double>()   );
+      case 12: return( value<float   >() == that.value<float   >() );
+      case 13: return( value<double  >() == that.value<double  >() );
       case 15: return( !this->compare(that) );
       default: return( _type==that._type );
     } return true;
@@ -143,19 +143,19 @@ namespace noType
 
   bool untyped::operator<( untyped const &that ) const {
     switch( _type ) {
-      case  1: return( value<bool>()     < that.value<bool>()     );
-      case  2: return( value<char>()     < that.value<char>()     );
-      case  3: return( value<wchar_t>()  < that.value<wchar_t>()  );
-      case  4: return( value<int8_t>()   < that.value<int8_t>()   );
-      case  5: return( value<uint8_t>()  < that.value<uint8_t>()  );
-      case  6: return( value<int16_t>()  < that.value<int16_t>()  );
+      case  1: return( value<bool    >() < that.value<bool    >() );
+      case  2: return( value<char    >() < that.value<char    >() );
+      case  3: return( value<wchar_t >() < that.value<wchar_t >() );
+      case  4: return( value<int8_t  >() < that.value<int8_t  >() );
+      case  5: return( value<uint8_t >() < that.value<uint8_t >() );
+      case  6: return( value<int16_t >() < that.value<int16_t >() );
       case  7: return( value<uint16_t>() < that.value<uint16_t>() );
-      case  8: return( value<int32_t>()  < that.value<int32_t>()  );
+      case  8: return( value<int32_t >() < that.value<int32_t >() );
       case  9: return( value<uint32_t>() < that.value<uint32_t>() );
-      case 10: return( value<int64_t>()  < that.value<int64_t>()  );
+      case 10: return( value<int64_t >() < that.value<int64_t >() );
       case 11: return( value<uint64_t>() < that.value<uint64_t>() );
-      case 12: return( value<float>()    < that.value<float>()    );
-      case 13: return( value<double>()   < that.value<double>()   );
+      case 12: return( value<float   >() < that.value<float   >() );
+      case 13: return( value<double  >() < that.value<double  >() );
       case 15: size_t i(0);
         for(; i<size() && i<that.size(); i++)
           if( std::string::operator[](i) >= ((std::string)that).operator[](i) )
@@ -167,19 +167,19 @@ namespace noType
 
   untyped& untyped::operator+=( untyped const &that ) {
     switch( _type ?this->_type :that._type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()     + that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     + that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  + that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   + that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  + that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  + that.value<int16_t>()  ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool    >() + that.value<bool    >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char    >() + that.value<char    >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t >() + that.value<wchar_t >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t  >() + that.value<int8_t  >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t >() + that.value<uint8_t >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t >() + that.value<int16_t >() ) ); break;
       case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() + that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  + that.value<int32_t>()  ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t >() + that.value<int32_t >() ) ); break;
       case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() + that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  + that.value<int64_t>()  ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t >() + that.value<int64_t >() ) ); break;
       case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() + that.value<uint64_t>() ) ); break;
-      case 12: operator=( static_cast<float>    ( value<float>()    + that.value<float>()    ) ); break;
-      case 13: operator=( static_cast<double>   ( value<double>()   + that.value<double>()   ) ); break;
+      case 12: operator=( static_cast<float   > ( value<float   >() + that.value<float   >() ) ); break;
+      case 13: operator=( static_cast<double  > ( value<double  >() + that.value<double  >() ) ); break;
       case 15: if(( _type ?this->_type :that._type )==that._type) std::string::append( that ); else std::string::push_back( that ); break;
       default: this->assign(that);
     } return *this;
@@ -187,38 +187,38 @@ namespace noType
 
   untyped& untyped::operator-=( untyped const &that ) {
     switch( this->_type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()     - that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     - that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  - that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   - that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  - that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  - that.value<int16_t>()  ) ); break;
-      case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() - that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  - that.value<int32_t>()  ) ); break;
-      case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() - that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  - that.value<int64_t>()  ) ); break;
-      case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() - that.value<uint64_t>() ) ); break;
-      case 12: operator=( static_cast<float>    ( value<float>()    - that.value<float>()    ) ); break;
-      case 13: operator=( static_cast<double>   ( value<double>()   - that.value<double>()   ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool    >() - that.value<bool     >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char    >() - that.value<char     >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t >() - that.value<wchar_t  >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t  >() - that.value<int8_t   >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t >() - that.value<uint8_t  >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t >() - that.value<int16_t  >() ) ); break;
+      case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() - that.value<uint16_t >() ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t >() - that.value<int32_t  >() ) ); break;
+      case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() - that.value<uint32_t >() ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t >() - that.value<int64_t  >() ) ); break;
+      case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() - that.value<uint64_t >() ) ); break;
+      case 12: operator=( static_cast<float   > ( value<float   >() - that.value<float    >() ) ); break;
+      case 13: operator=( static_cast<double  > ( value<double  >() - that.value<double   >() ) ); break;
       case 15: auto i=std::string::find(that); if(i!=npos) std::string::erase( i, (that._type==_type ?that.size() :1) );
     } return *this;
   }
 
   untyped& untyped::operator*=( untyped const &that ) {
     switch( this->_type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()    && that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     * that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  * that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   * that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  * that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  * that.value<int16_t>()  ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool    >()&& that.value<bool    >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char    >() * that.value<char    >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t >() * that.value<wchar_t >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t  >() * that.value<int8_t  >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t >() * that.value<uint8_t >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t >() * that.value<int16_t >() ) ); break;
       case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() * that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  * that.value<int32_t>()  ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t >() * that.value<int32_t >() ) ); break;
       case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() * that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  * that.value<int64_t>()  ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t >() * that.value<int64_t >() ) ); break;
       case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() * that.value<uint64_t>() ) ); break;
-      case 12: operator=( static_cast<float>    ( value<float>()    * that.value<float>()    ) ); break;
-      case 13: operator=( static_cast<double>   ( value<double>()   * that.value<double>()   ) ); break;
+      case 12: operator=( static_cast<float   > ( value<float   >() * that.value<float   >() ) ); break;
+      case 13: operator=( static_cast<double  > ( value<double  >() * that.value<double  >() ) ); break;
       case 15:{
         std::string::clear();
         for( size_t i(0), len=size(); i<len; i++,i++ )
@@ -230,66 +230,66 @@ namespace noType
 
   untyped& untyped::operator/=( untyped const &that ) {
     switch( this->_type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()     / that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     / that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  / that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   / that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  / that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  / that.value<int16_t>()  ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool    >() / that.value<bool    >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char    >() / that.value<char    >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t >() / that.value<wchar_t >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t  >() / that.value<int8_t  >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t >() / that.value<uint8_t >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t >() / that.value<int16_t >() ) ); break;
       case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() / that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  / that.value<int32_t>()  ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t >() / that.value<int32_t >() ) ); break;
       case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() / that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  / that.value<int64_t>()  ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t >() / that.value<int64_t >() ) ); break;
       case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() / that.value<uint64_t>() ) ); break;
-      case 12: operator=( static_cast<float>    ( value<float>()    / that.value<float>()    ) ); break;
-      case 13: operator=( static_cast<double>   ( value<double>()   / that.value<double>()   ) ); break;
+      case 12: operator=( static_cast<float   > ( value<float   >() / that.value<float   >() ) ); break;
+      case 13: operator=( static_cast<double  > ( value<double  >() / that.value<double  >() ) ); break;
     } return *this;
   }
 
   untyped& untyped::operator%=( untyped const &that ) {
     switch( this->_type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()     % that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     % that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  % that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   % that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  % that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  % that.value<int16_t>()  ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool>()     % that.value<bool    >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char>()     % that.value<char    >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t>()  % that.value<wchar_t >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t>()   % that.value<int8_t  >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t>()  % that.value<uint8_t >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t>()  % that.value<int16_t >() ) ); break;
       case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() % that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  % that.value<int32_t>()  ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t>()  % that.value<int32_t >() ) ); break;
       case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() % that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  % that.value<int64_t>()  ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t>()  % that.value<int64_t >() ) ); break;
       case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() % that.value<uint64_t>() ) ); break;
     } return *this;
   }
 
   untyped& untyped::operator&=( untyped const &that ) {
     switch( this->_type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()     & that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     & that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  & that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   & that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  & that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  & that.value<int16_t>()  ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool    >() & that.value<bool    >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char    >() & that.value<char    >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t >() & that.value<wchar_t >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t  >() & that.value<int8_t  >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t >() & that.value<uint8_t >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t >() & that.value<int16_t >() ) ); break;
       case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() & that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  & that.value<int32_t>()  ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t >() & that.value<int32_t >() ) ); break;
       case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() & that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  & that.value<int64_t>()  ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t >() & that.value<int64_t >() ) ); break;
       case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() & that.value<uint64_t>() ) ); break;
     } return *this;
   }
 
   untyped& untyped::operator|=( untyped const &that ) {
     switch( this->_type ) {
-      case  1: operator=( static_cast<bool>     ( value<bool>()     | that.value<bool>()     ) ); break;
-      case  2: operator=( static_cast<char>     ( value<char>()     | that.value<char>()     ) ); break;
-      case  3: operator=( static_cast<wchar_t>  ( value<wchar_t>()  | that.value<wchar_t>()  ) ); break;
-      case  4: operator=( static_cast<int8_t>   ( value<int8_t>()   | that.value<int8_t>()   ) ); break;
-      case  5: operator=( static_cast<uint8_t>  ( value<uint8_t>()  | that.value<uint8_t>()  ) ); break;
-      case  6: operator=( static_cast<int16_t>  ( value<int16_t>()  | that.value<int16_t>()  ) ); break;
+      case  1: operator=( static_cast<bool    > ( value<bool    >() | that.value<bool    >() ) ); break;
+      case  2: operator=( static_cast<char    > ( value<char    >() | that.value<char    >() ) ); break;
+      case  3: operator=( static_cast<wchar_t > ( value<wchar_t >() | that.value<wchar_t >() ) ); break;
+      case  4: operator=( static_cast<int8_t  > ( value<int8_t  >() | that.value<int8_t  >() ) ); break;
+      case  5: operator=( static_cast<uint8_t > ( value<uint8_t >() | that.value<uint8_t >() ) ); break;
+      case  6: operator=( static_cast<int16_t > ( value<int16_t >() | that.value<int16_t >() ) ); break;
       case  7: operator=( static_cast<uint16_t> ( value<uint16_t>() | that.value<uint16_t>() ) ); break;
-      case  8: operator=( static_cast<int32_t>  ( value<int32_t>()  | that.value<int32_t>()  ) ); break;
+      case  8: operator=( static_cast<int32_t > ( value<int32_t >() | that.value<int32_t >() ) ); break;
       case  9: operator=( static_cast<uint32_t> ( value<uint32_t>() | that.value<uint32_t>() ) ); break;
-      case 10: operator=( static_cast<int64_t>  ( value<int64_t>()  | that.value<int64_t>()  ) ); break;
+      case 10: operator=( static_cast<int64_t > ( value<int64_t >() | that.value<int64_t >() ) ); break;
       case 11: operator=( static_cast<uint64_t> ( value<uint64_t>() | that.value<uint64_t>() ) ); break;
     } return *this;
   }
