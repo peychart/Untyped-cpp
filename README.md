@@ -99,6 +99,12 @@ Here are use examples:
 	myJson["array"][0] = -10;
 	myJson["empty"] = untyped();
 	std::cout << myJson << std::endl << std::endl;
+ 
+								// from and to std::string:
+	std::stringstream o(std::stringstream::out);
+	untyped()("[4,-5,2]").serializeJson(o);
+	std::string s(o.str());
+	std::cout << "Deserialize and re-serialize fron/to strings: " << s << std::endl << std::endl;
 
   
 /-->
@@ -108,6 +114,8 @@ Here are use examples:
 	{"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
  	
 	{"array":[-10,-11,-12,-13],"bool":true,"char":'a',"float":-3.14159,"empty":null,"int":15,"string":"abcdef"}
+ 
+	Deserialize and re-serialize fron/to strings: [4,-5,2]
  .
 
 								// Deserialisation from stream:
@@ -210,6 +218,7 @@ Here are use examples:
 
 								// Comments:
  
+	myStream=std::stringstream();
 	myStream << "{/* This is a comment */ \"name\":\"Beno\u00EEt\"  /* This is an other comment */  }";
 	std::cout << untyped()( myStream )["name"] << std::endl << std::endl;
 
