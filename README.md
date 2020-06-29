@@ -102,7 +102,7 @@ Here are use examples:
  
 								// from and to std::string:
 	std::stringstream o(std::stringstream::out);
-	untyped()("[4,-5,2]").serializeJson(o);
+	untyped()("[ 4 ,-5,    2  ]").serializeJson(o);
 	std::string s(o.str());
 	std::cout << "Deserialize and re-serialize from/to strings: " << s << std::endl << std::endl;
 
