@@ -118,8 +118,9 @@ Here are use examples:
 	Deserialize and re-serialize from/to strings: [4,-5,2]
  .
 
-								// Deserialisation from stream:
+							// Deserialisation from stream:
  
+	std::stringstream       myStream( std::stringstream::in | std::stringstream::out );
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
 	std::cout << "Deserialization:"                  << std::endl;
