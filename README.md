@@ -104,7 +104,7 @@ Here are use examples:
 	std::stringstream o(std::stringstream::out);
 	untyped()("[4,-5,2]").serializeJson(o);
 	std::string s(o.str());
-	std::cout << "Deserialize and re-serialize fron/to strings: " << s << std::endl << std::endl;
+	std::cout << "Deserialize and re-serialize from/to strings: " << s << std::endl << std::endl;
 
   
 /-->
@@ -115,7 +115,7 @@ Here are use examples:
  	
 	{"array":[-10,-11,-12,-13],"bool":true,"char":'a',"float":-3.14159,"empty":null,"int":15,"string":"abcdef"}
  
-	Deserialize and re-serialize fron/to strings: [4,-5,2]
+	Deserialize and re-serialize from/to strings: [4,-5,2]
  .
 
 								// Deserialisation from stream:
