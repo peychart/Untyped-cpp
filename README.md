@@ -105,7 +105,7 @@ Here are use examples:
 	untyped().deserializeJson("[ 4 ,-5,    2  ]").serializeJson(o);
 	std::string s(o.str());
 	std::cout << "Deserialize and re-serialize from/to strings: " << s << std::endl << std::endl;
-	//However, I think there must be a better way to remove spaces from a string... ;-)
+	//However, I think there must be a better way to remove ws from a string... ;-)
 
   
 /-->
