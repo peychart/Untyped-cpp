@@ -80,9 +80,9 @@ namespace noType
   inline char const *                 data        ( void )                const {return std::string::data();};
   untyped&                            erase       ( size_t p, size_t l=-1L )    {if(size() && !_type) std::string::erase(p, l); return *this;};
   inline vectorType&                  vector      ( void )                      {return  (*((vectorType*)this));};
-  inline untyped&                     at          ( size_t i )                  {return *(*((vectorType*)this)).at(i);};
+  inline untyped&                     at          ( size_t i )                  {return *vectorType::at(i);};
   inline mapType&                     map         ( void )                      {return  (*((mapType*)this));};
-  inline untyped&                     at          ( std::string s )             {return *(*((mapType*)this)).at(s);};
+  inline untyped&                     at          ( std::string s )             {return *mapType::at(s);};
 
   untyped&                            assign      ( untyped const &  );
   template<class T> untyped&          assign      ( T       const &v )          {return assign( untyped( v ) );};
@@ -132,51 +132,50 @@ namespace noType
 
   template<class T> inline untyped&   operator+=  ( T const &that )             {return  operator+=( untyped( that ) );};
   untyped&                            operator+=  ( untyped const & );
-  template<class T> inline untyped    operator+   ( T const &that ) const       {return  operator+ ( untyped( that ) );};
+  template<class T> inline untyped    operator+   ( T const &that )       const {return  operator+ ( untyped( that ) );};
   inline untyped                      operator+   ( untyped const &that ) const {return  untyped( *this ).operator+=( that );};
   template<class T> inline untyped&   operator-=  ( T const &that )             {return  operator-=( untyped( that ) );};
   untyped&                            operator-=  ( untyped const &  );
-  template<class T> inline untyped    operator-   ( T const &that ) const       {return  operator- ( untyped( that ) );};
+  template<class T> inline untyped    operator-   ( T const &that )       const {return  operator- ( untyped( that ) );};
   inline untyped                      operator-   ( untyped const &that ) const {return  untyped( *this ).operator-=( that );};
   template<class T> inline untyped&   operator*=  ( T const &that )             {return  operator*=( untyped( that ) );};
   untyped&                            operator*=  ( untyped const &  );
-  template<class T> inline untyped    operator*   ( T const &that ) const       {return  operator* ( untyped( that ) );};
+  template<class T> inline untyped    operator*   ( T const &that )       const {return  operator* ( untyped( that ) );};
   inline untyped                      operator*   ( untyped const &that ) const {return  untyped( *this ).operator*=( that );};
   template<class T> inline untyped&   operator/=  ( T const &that )             {return  operator/=( untyped( that ) );};
   untyped&                            operator/=  ( untyped const &  );
-  template<class T> inline untyped    operator/   ( T const &that ) const       {return  operator/ ( untyped( that ) );};
+  template<class T> inline untyped    operator/   ( T const &that )       const {return  operator/ ( untyped( that ) );};
   inline untyped                      operator/   ( untyped const &that ) const {return  untyped( *this ).operator/=( that );};
   template<class T> inline untyped&   operator%=  ( T const &that )             {return  operator%=( untyped( that ) );};
   untyped&                            operator%=  ( untyped const &  );
-  template<class T> inline untyped    operator%   ( T const &that ) const       {return  operator% ( untyped( that ) );};
+  template<class T> inline untyped    operator%   ( T const &that )       const {return  operator% ( untyped( that ) );};
   inline untyped                      operator%   ( untyped const &that ) const {return  untyped( *this ).operator%=( that );};
   template<class T> inline untyped&   operator&=  ( T const &that )             {return  operator&=( untyped( that ) );};
   untyped&                            operator&=  ( untyped const &  );
-  template<class T> inline untyped    operator&   ( T const &that ) const       {return  operator& ( untyped( that ) );};
+  template<class T> inline untyped    operator&   ( T const &that )       const {return  operator& ( untyped( that ) );};
   inline untyped                      operator&   ( untyped const &that ) const {return  untyped( *this ).operator&=( that );};
   template<class T> inline untyped&   operator|=  ( T const &that )             {return  operator|=( untyped( that ) );};
   untyped&                            operator|=  ( untyped const &  );
-  template<class T> inline untyped    operator|   ( T const &that ) const       {return  operator| ( untyped( that ) );};
+  template<class T> inline untyped    operator|   ( T const &that )       const {return  operator| ( untyped( that ) );};
   inline untyped                      operator|   ( untyped const &that ) const {return  untyped( *this ).operator|=( that );};
 
-  virtual untyped&                    serialize      ( std::ostream & );
-  virtual untyped&                    serializeJson  ( std::ostream &o )        {size_t b(untyped::json); jsonMode(); o << *this; untyped::json=b; return *this;};
+  inline untyped&                     operator[]  ( size_t n )                  {for(size_t i(vectorSize()); i<=n; i++) {vectorType::push_back(new untyped);} return at(n);};
+  inline untyped&                     operator[]  ( std::string s )             {mapType::const_iterator it=mapType::find(s); if(it!=mapType::end()) return *(it->second); return *(mapType::operator[](s)=new untyped);};
 
-  virtual untyped&                    deserialize    ( std::string  s )         {std::istringstream i(s); return(isJsonMode() ?deserializeJson(i) :deserialize(i));};
-  virtual untyped&                    deserialize    ( std::istream & );
-  virtual untyped&                    deserializeJson( std::string  s )         {std::istringstream i(s); return deserializeJson(i);};
-  virtual untyped&                    deserializeJson( std::istream & );
-  inline untyped&                     operator()     ( std::string  s )         {std::istringstream i(s); return deserialize( i );};
-  inline untyped&                     operator()     ( std::istream &i )        {return deserialize( i );};
+  virtual untyped&                    serialize       ( std::ostream & );
+  virtual untyped&                    serializeJson   ( std::ostream &o )       {size_t b(untyped::json); jsonMode(); o << *this; untyped::json=b; return *this;};
 
-  inline untyped&                     operator[] ( size_t n )                   {for(size_t i(vectorSize()); i<=n; i++) {vectorType::push_back(new untyped);} return at(n);};
-  inline untyped&                     operator[] ( std::string s )              {
-    mapType::const_iterator it=mapType::find(s); if(it!=mapType::end()) return *it->second; return *(mapType::operator[](s)=new untyped);};
+  virtual untyped&                    deserialize     ( std::string  s )        {std::istringstream i(s); return(isJsonMode() ?deserializeJson(i) :deserialize(i));};
+  virtual untyped&                    deserialize     ( std::istream & );
+  virtual untyped&                    deserializeJson ( std::string  s )        {std::istringstream i(s); return deserializeJson(i);};
+  virtual untyped&                    deserializeJson ( std::istream & );
+  inline untyped&                     operator()      ( std::string  s )        {std::istringstream i(s); return deserialize( i );};
+  inline untyped&                     operator()      ( std::istream &i )       {return deserialize( i );};
 
-  friend std::ostream&                operator<< ( std::ostream &, untyped const & );
-  friend std::ostream&                operator<< ( std::ostream &, mapType const & );
-  friend std::ostream&                operator<< ( std::ostream &, vectorType const & );
-  friend std::ostream&                operator<< ( std::ostream &out, typePair const &that ) {return out << that.first << ": " << that.second;};
+  friend std::ostream&                operator<<      ( std::ostream &, untyped const & );
+  friend std::ostream&                operator<<      ( std::ostream &, mapType const & );
+  friend std::ostream&                operator<<      ( std::ostream &, vectorType const & );
+  friend std::ostream&                operator<<      ( std::ostream &out, typePair const &that ) {return out << that.first << ": " << that.second;};
 
   inline bool                         isBinaryMode    ( void )            const {return( !untyped::json );};
   inline bool                         isJsonMode      ( void )            const {return(  untyped::json );};
@@ -203,7 +202,7 @@ namespace noType
         std::swap( *pt1, *pt2 );
   };
 
-  static inline size_t                stringSize      ( char const *v )         {size_t s(0); if (v) while( *v++ ) s++; return s;};
+  static inline size_t        stringSize      ( char const *v )                 {size_t s(0); if (v) while( *v++ ) s++; return s;};
 
  private:
   uchar                       _type; /// WARNING: type must be < 32 [5+3 bits shared with desc(structure) in a char for the serialization methods...]
@@ -213,7 +212,7 @@ namespace noType
   inline void                 _set            ( mapType      const &v )         {for(mapType::const_iterator it=v.begin(); it!=v.end(); it++) operator[](it->first)= *(it->second);};
   static void                 _writeTypeAndStructure( std::ostream&, uchar, uchar const & );
   static inline void          _writeSize      ( std::ostream& o, size_t s )     {o.write( hton(s), sizeof(s) );};
-  static uchar                _readTypeAndStructure( std::istream&, uchar & );
+  static uchar                _readTypeAndStructure ( std::istream&, uchar & );
   static inline void          _readSize       ( std::istream &in, size_t &s )   {if( in.read(reinterpret_cast<char*>(&s), sizeof(s)) ) ntoh( &s, sizeof(s) );};
 
   static untyped              _getJsonObject  ( std::istream &, char & );
@@ -233,9 +232,6 @@ namespace noType
   static inline bool          _isWhiteSpace   ( char &c )                       {if(c==' ' || c=='\t' || c=='\r' || c=='\n') return true; return false;};
   static inline untyped       _exitJsonObject ( std::istream &in,char x)        {char c;while(in.read(&c, 1) && c!=x); return untyped();};
  };
-
 }
-
 using namespace noType;
-
 #endif

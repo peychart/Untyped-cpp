@@ -304,7 +304,7 @@ namespace noType
     }switch( that._type ) {
       case  1:
         if( that.isJsonMode() )
-              out << (that.value<bool>()?"true":"false");
+              out << (that.value<bool>() ?"true" :"false");
         else {out << static_cast<bool>(that.value<bool>() );}         break;
       case  2:
         if( that.isJsonMode() ) {out << '\'';};
