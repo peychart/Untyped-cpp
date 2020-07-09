@@ -31,7 +31,7 @@ Here are use examples:
 	#include "untyped.h"
  
 	int main() {
- 									// Intuitive syntaxe:
+ 										// Intuitive syntaxe:
 	untyped	myJson('j');
 	myJson.jsonMode();					// <-- JSON format management
  
@@ -44,9 +44,9 @@ Here are use examples:
 	
 	myJson.binaryMode();	// <-- BINARY format management
 	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" ) << std::endl << std::endl;
-	myJson.jsonMode();	// <-- JSON format management
  
-								// Implicit or explicit cast:
+	myJson.jsonMode();	// <-- JSON format management
+									// Implicit or explicit cast:
 	myJson = 31.4159e-1;
 	auto myDouble = myJson;							// <-- implicite
 	std::cout << "myDouble   =" << myDouble                 << std::endl;
