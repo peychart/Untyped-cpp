@@ -134,7 +134,7 @@ Here are use examples:
 	std::cout << "My object 'myJson[\"objectArray\"][1][\"o2\"]' is: " << myJson["objectArray"][1]["o2"] << std::endl;
 	std::cout << "My object 'myJson[\"objectArray\"][2][\"o2\"]' is: " << myJson["objectArray"][2]["o2"] << std::endl << std::endl;
  
-	std::cout << untyped()( myStream )["objectArray"] << std::endl << std::endl;
+	std::cout << "My object 'objectArray' is: " << untyped()( myStream )["objectArray"] << std::endl << std::endl;
  
  
 /-->
@@ -149,7 +149,7 @@ Here are use examples:
 	My object 'myJson["objectArray"][1]["o2"]' is: true
 	My object 'myJson["objectArray"][2]["o2"]' is: false
  
-	"objectArray":[{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
+	My object 'objectArray' is: [{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
  
  .
 
