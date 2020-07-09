@@ -31,9 +31,9 @@ Here are use examples:
 	#include "untyped.h"
  
 	int main() {
- 								// Intuitive syntaxe:
+ 									// Intuitive syntaxe:
 	untyped	myJson('j');
-	myJson.jsonMode();		// <-- JSON format management
+	myJson.jsonMode();					// <-- JSON format management
  
 	std::cout << myJson                 << std::endl;	// <-- type char
  
@@ -49,7 +49,7 @@ Here are use examples:
 								// Implicit or explicit cast:
 	myJson = 31.4159e-1;
 	auto myDouble = myJson;							// <-- implicite
-	std::cout << "myDouble   =" << myDouble << std::endl    << std::endl;
+	std::cout << "myDouble   =" << myDouble                 << std::endl;
 	std::cout << "cast<float>=" << myDouble.value<double>() << std::endl;	// <-- explicite
 	std::cout << "cast<int>  =" << myDouble.value<int>()    << std::endl;
 	std::cout << "cast<bool> =" << myDouble.value<bool>()   << std::endl << std::endl;
@@ -68,7 +68,7 @@ Here are use examples:
 	cast<bool> =1
 .
 
-								// Automatic memory allocation, as close as needed:
+							// Automatic memory allocation, as close as needed:
  
 	myJson.clear();
 	myJson[0]=10;
@@ -86,7 +86,7 @@ Here are use examples:
 	myJson = myJson2; myJson2.clear();
 	std::cout << myJson << std::endl << std::endl;
  
-								// Serialization:
+									// Serialization:
 	myJson.clear();
 	myJson["string"] = "abcdef";
 	myJson["char"] = 'a';
@@ -100,7 +100,7 @@ Here are use examples:
 	myJson["empty"] = untyped();
 	std::cout << myJson << std::endl << std::endl;
  
-								// from and to std::string:
+									// from and to std::string:
 	std::stringstream o(std::stringstream::out);
 	untyped().deserializeJson("[ 4 ,-5,    2  ]").serializeJson(o);
 	std::string s(o.str());
@@ -119,18 +119,18 @@ Here are use examples:
 	Deserialize and re-serialize from/to strings: [4,-5,2]
  .
 
-							// Deserialisation from stream:
+									// Deserialisation from stream:
  
 	std::stringstream       myStream( std::stringstream::in | std::stringstream::out );
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
 	std::cout << "Deserialization:"                  << std::endl;
-	std::cout << myJson.deserializeJson("[0,1,2,3]") << std::endl;			// From string
-	std::cout << myJson("[0,-1,-2,-3]")              << std::endl; // for short...
-	std::cout << myJson[2]              << std::endl << std::endl;
-	
-	std::cout << myJson.deserializeJson( myStream )  << std::endl;			// From stream
+	std::cout << myJson.deserializeJson( myStream )  << std::endl << std::endl;	// From stream
  	
+	std::cout << myJson.deserializeJson("[0,1,2,3]") << std::endl;			// From string
+	std::cout << myJson("[0,-1,-2,-3]")              << std::endl;			// <-- for short...
+	std::cout << myJson[2]                           << std::endl << std::endl;
+	
 	std::cout << "My object 'myJson[\"objectArray\"][1][\"o2\"]' is: " << myJson["objectArray"][1]["o2"] << std::endl;
 	std::cout << "My object 'myJson[\"objectArray\"][2][\"o2\"]' is: " << myJson["objectArray"][2]["o2"] << std::endl << std::endl;
  
@@ -140,11 +140,11 @@ Here are use examples:
 /-->
 	
 	Deserialization:
+	{"array":[-10,-11,-12,-13],"bool":true,"char":'a',"double":-3.14159,"empty":"","int":15,"objectArray":[{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}],"string":"abcdef","void":null}
+
 	[0,1,2,3]
 	[0,-1,-2,-3]
 	-2
-	
-	{"array":[-10,-11,-12,-13],"bool":true,"char":'a',"double":-3.14159,"empty":"","int":15,"objectArray":[{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}],"string":"abcdef","void":null}
 	
 	My object 'myJson["objectArray"][1]["o2"]' is: true
 	My object 'myJson["objectArray"][2]["o2"]' is: false
@@ -153,7 +153,7 @@ Here are use examples:
  
  .
 
-								// Indented output:
+									// Indented output:
 	myJson.prettyJsonMode();
 	std::cout << myJson << std::endl << std::endl;
  
@@ -191,7 +191,7 @@ Here are use examples:
 	}
  .
 
-								// in/from FILE:
+									// in/from FILE:
 	std::ofstream	outBinFile("/tmp/serialize.bin", std::ifstream::trunc|std::ifstream::binary);
 	std::ifstream	inBinFile ("/tmp/serialize.bin", std::ofstream::binary);
  
@@ -203,7 +203,7 @@ Here are use examples:
 	myJson.serialiseJson( outTxtFile );
 	outBinFile.flush(); outTxtFile.flush();
 
-	std::cout << untyped()( inBinFile )["string"] << std::endl;			// <-- Only what is needed...
+	std::cout << untyped()( inBinFile )["string"] << std::endl;		// <-- Only what is needed...
 	std::cout << inBinFile.tellg() << " octets deserialized from file." << std::endl;
 	myJson.jsonMode();
 	std::cout << untyped()( inTxtFile )["double"] << std::endl << std::endl;
@@ -218,7 +218,7 @@ Here are use examples:
 	202 octets deserialized from file.
  .
 
-								// Comments:
+										// Comments:
  
 	myStream=std::stringstream();
 	myStream << "{/* This is a comment */ \"name\":\"Beno\u00EEt\"  /* This is an other comment */  }";
