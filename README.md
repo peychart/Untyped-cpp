@@ -21,7 +21,7 @@ Allows:
 * and, of course, a self-managed memory space (nothing more than a c++ flavor).
 
 
-Here are use examples:
+Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowerStrip/tree/master/Next-version):
 
 	# define out /*
 	g++ -std=c++0x -rdynamic -Wall -s -O2 -o test $0 untyped.cpp; exit $?
