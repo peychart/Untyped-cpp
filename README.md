@@ -73,9 +73,10 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	myJson.clear();
 	myJson[0]=10;
 	myJson[1]=11;
-	myJson[2]=12;
-	myJson[3]=13;
-	std::cout << "Serialization:" << std::endl;
+	myJson[3]=12;
+	myJson[myJson.vector().size()]=13;
+ 
+	myJson.jsonMode();
 	std::cout << myJson << std::endl;
  
 	untyped myJson2;
@@ -110,7 +111,6 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
   
 /-->
 
-	Serialization:
 	[10,11,12,13]
 	{"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
  	
