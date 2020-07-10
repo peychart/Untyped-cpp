@@ -79,12 +79,12 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	myJson.jsonMode();
 	std::cout << myJson << std::endl;
  
-	untyped myJson2;
-	myJson2["array1"] = myJson;
-	myJson2["array2"] = myJson; myJson2["array2"][3]=23;
-	myJson2["array3"] = myJson; myJson2["array3"][2]=32;
-	myJson2["array4"] = myJson; myJson2["array4"][1]=41;
-	myJson = myJson2; myJson2.clear();
+	untyped tmp;
+	tmp["array1"] = myJson;
+	tmp["array2"] = myJson; tmp["array2"][3]=23;
+	tmp["array3"] = myJson; tmp["array3"][2]=32;
+	tmp["array4"] = myJson; tmp["array4"][1]=41;
+	myJson = tmp; tmp.clear();
 	std::cout << myJson << std::endl << std::endl;
  
 									// Serialization:
