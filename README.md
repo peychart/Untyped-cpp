@@ -30,54 +30,58 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
  
 	#include "untyped.h"
  
-	int main() {
- 										// Intuitive syntaxe:
+	int main() {			// ****** Intuitive syntax ******
+ 
 	untyped	myJson('j');
-	myJson.jsonMode();					// <-- JSON format management
- 
-	std::cout << myJson                 << std::endl;	// <-- type char
- 
-	std::cout << ( myJson + 'A' - 'a' ) << std::endl;
- 
-	myJson = "aaaJaaa";                                     // <-- type string
-	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" ) << std::endl;
-	
-	myJson.binaryMode();	// <-- BINARY format management
-	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" ) << std::endl << std::endl;
- 
 	myJson.jsonMode();	// <-- JSON format management
-									// Implicit or explicit cast:
-	myJson = 31.4159e-1;
-	auto myDouble = myJson;							// <-- implicite
-	std::cout << "myDouble   =" << myDouble                 << std::endl;
-	std::cout << "cast<float>=" << myDouble.value<double>() << std::endl;	// <-- explicite
-	std::cout << "cast<int>  =" << myDouble.value<int>()    << std::endl;
-	std::cout << "cast<bool> =" << myDouble.value<bool>()   << std::endl << std::endl;
-
  
-/-->
-
-	'j'
-	'J'
-	"Json"
-	Json
+	std::cout << myJson					<< std::endl;
+	//-> 'j'		// <-- type char
+ 
+	std::cout << ( myJson + 'A' - 'a' )			<< std::endl;
+	//-> 'J'
+ 
+	myJson = "aaaJaaa";
+	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" )	<< std::endl;
+	//-> "Json"		// <-- type string
+ 
+	myJson.binaryMode();	// <-- BINARY format management
+	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" )	<< std::endl;
+	//-> Json		// <-- std::string
+ 
+ 
+	myJson.jsonMode();	// <-- JSON format management again...
+ 
+ 
+ 
+				// ****** Implicit or explicit cast ******
+ 
+	myJson = 31.4159e-1;		// <-- implicite double
+	auto myDouble = myJson;
+	std::cout << "myDouble   = " << myDouble		<< std::endl;
+	//-> myDouble   = 3.14159	// <-- implicite double
+ 
+	std::cout << "cast<float>= " << myDouble.value<float>()<< std::endl;
+	//-> cast<float>= 3.14159	// <-- explicite float
+ 
+	std::cout << "cast<int>  = " << myDouble.value<int>()	<< std::endl;
+	//-> cast<int>  = 3		// <-- explicite int
+ 
+	std::cout << "cast<bool> = " << myDouble.value<bool>()	<< std::endl;
+	//-> cast<bool> = 1		// <-- explicite bool
 	
-	myDouble   =3.14159
-	cast<float>=3.14159
-	cast<int>  =3
-	cast<bool> =1
-.
-
-							// Automatic memory allocation, as close as needed:
  
+ 
+			// ****** Automatic memory allocation, as close as needed ******
 	myJson.clear();
 	myJson[0]=10;
 	myJson[1]=11;
-	myJson[3]=12;
+	myJson[myJson.vector().size()]=12;
 	myJson[myJson.vector().size()]=13;
  
 	myJson.jsonMode();
 	std::cout << myJson << std::endl;
+	//-> [10,11,12,13]
  
 	untyped tmp;
 	tmp["array1"] = myJson;
@@ -85,9 +89,21 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	tmp["array3"] = myJson; tmp["array3"][2]=32;
 	tmp["array4"] = myJson; tmp["array4"][1]=41;
 	myJson = tmp; tmp.clear();
-	std::cout << myJson << std::endl << std::endl;
+	std::cout << myJson << std::endl;
+	//-> {"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
  
-									// Serialization:
+	std::vector<std::string> myVector={ "s10","s11","s12","s13" };
+	myJson = myVector;				// <-- From a std::vector...
+	std::cout << myJson << std::endl;
+	//-> ["s10","s11","s12","s13"]
+ 
+	std::map<std::string,untyped> myMap={ {"myStr1",myVector}, {"myStr2",myVector}, {"myStr3",myVector}, {"myStr4",myVector} };
+	myJson = myMap;					// <-- From a std::map...
+	std::cout << myJson << std::endl;
+	//-> {"myStr1":["s10","s11","s12","s13"],"myStr2":["s10","s11","s12","s13"],"myStr3":["s10","s11","s12","s13"],"myStr4":["s10","s11","s12","s13"]}
+
+ 
+					// ****** Serialization ******
 	myJson.clear();
 	myJson["string"] = "abcdef";
 	myJson["char"] = 'a';
@@ -99,68 +115,54 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	myJson["array"][1] = -11;
 	myJson["array"][0] = -10;
 	myJson["empty"] = untyped();
-	std::cout << myJson << std::endl << std::endl;
+	std::cout << myJson << std::endl;
+	//-> {"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
  
-									// from and to std::string:
-	std::stringstream o(std::stringstream::out);
-	untyped().deserializeJson("[ 4 ,-5,    2  ]").serializeJson(o);
-	std::string s(o.str());
-	std::cout << "Deserialize and re-serialize from/to strings: " << s << std::endl << std::endl;
-	//However, I think there must be a better way to remove ws from a string... ;-)
-
-  
-/-->
-
-	[10,11,12,13]
-	{"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
- 	
-	{"array":[-10,-11,-12,-13],"bool":true,"char":'a',"float":-3.14159,"empty":null,"int":15,"string":"abcdef"}
- 
-	Deserialize and re-serialize from/to strings: [4,-5,2]
- .
-
-									// Deserialisation from stream:
  
 	std::stringstream       myStream( std::stringstream::in | std::stringstream::out );
+
+							// from std::string to std::stream
+	untyped().deserializeJson("[ 4 ,-5,   2 ]").serializeJson(o);
+	std::string myString( myStream.str() );
+	std::cout << "Deserialize and re-serialize from/to strings: " << myString << std::endl;
+	//->Deserialize and re-serialize from/to strings: [4,-5,2]
+ 
+							// from std::stream
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
-	std::cout << "Deserialization:"                  << std::endl;
-	std::cout << myJson.deserializeJson( myStream )  << std::endl << std::endl;	// From stream
- 	
-	std::cout << myJson.deserializeJson("[0,1,2,3]") << std::endl;			// From string
-	std::cout << myJson("[0,-1,-2,-3]")              << std::endl;			// <-- for short...
-	std::cout << myJson[2]                           << std::endl << std::endl;
-	
+	std::cout << myJson.deserializeJson( myStream )  << std::endl;
+	//-> {"array":[-10,-11,-12,-13],"bool":true,"char":'a',"double":-3.14159,"empty":"","int":15,"objectArray":[{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}],"string":"abcdef","void":null}
+  
 	std::cout << "My object 'myJson[\"objectArray\"][1][\"o2\"]' is: " << myJson["objectArray"][1]["o2"] << std::endl;
-	std::cout << "My object 'myJson[\"objectArray\"][2][\"o2\"]' is: " << myJson["objectArray"][2]["o2"] << std::endl << std::endl;
+	//-> My object 'myJson["objectArray"][1]["o2"]' is: true
+ 
+	std::cout << "My object 'myJson[\"objectArray\"][2][\"o2\"]' is: " << myJson["objectArray"][2]["o2"] << std::endl;
+	//-> My object 'myJson["objectArray"][2]["o2"]' is: false
+	//...
+ 
+ 
+	std::cout << myJson.deserializeJson("[0,1,2,3]") << std::endl;	// From std::string
+	//-> [0,1,2,3]
+ 
+	std::cout << myJson("[0,-1,-2,-3]")              << std::endl;	// <-- the same thing, with a short syntax...
+	//-> [0,-1,-2,-3]
+ 
+	std::cout << myJson[2]                           << std::endl;	// check... ;-)
+	//-> -2
+ 
  
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
-	std::cout << "My object 'objectArray' is: " << untyped()( myStream )["objectArray"] << std::endl << std::endl;
+ 
+	std::cout << "My object 'objectArray' is: " << untyped()( myStream )["objectArray"] << std::endl;
+	//-> My object 'objectArray' is: [{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
  
  
-/-->
-	
-	Deserialization:
-	{"array":[-10,-11,-12,-13],"bool":true,"char":'a',"double":-3.14159,"empty":"","int":15,"objectArray":[{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}],"string":"abcdef","void":null}
-
-	[0,1,2,3]
-	[0,-1,-2,-3]
-	-2
-	
-	My object 'myJson["objectArray"][1]["o2"]' is: true
-	My object 'myJson["objectArray"][2]["o2"]' is: false
- 
-	My object 'objectArray' is: [{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
- 
- .
-
-									// Indented output:
+					// ****** Indented output ******
 	myJson.prettyJsonMode();
-	std::cout << myJson << std::endl << std::endl;
- 
 
-/-->
-	
+	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false
+	std::cout << myJson(myStream) << std::endl;
+	//->
 	{
 	 "array": [
 	  -10,
@@ -190,8 +192,7 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	 "string": "abcdef",
 	 "void": null
 	}
- .
-
+ 
 									// in/from FILE:
 	std::ofstream	outBinFile("/tmp/serialize.bin", std::ifstream::trunc|std::ifstream::binary);
 	std::ifstream	inBinFile ("/tmp/serialize.bin", std::ofstream::binary);
@@ -204,32 +205,24 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	myJson.serialiseJson( outTxtFile );
 	outBinFile.flush(); outTxtFile.flush();
 
-	std::cout << untyped()( inBinFile )["string"] << std::endl;		// <-- Only what is needed...
+	std::cout << untyped()( inBinFile )["string"] << std::endl;
+	//-> abcdef					// <-- Only what is needed...
+ 
 	std::cout << inBinFile.tellg() << " octets deserialized from file." << std::endl;
+	//-> 196 octets deserialized from file.
+ 
 	myJson.jsonMode();
 	std::cout << untyped()( inTxtFile )["double"] << std::endl << std::endl;
-	std::cout << inTxtFile.tellg() << " octets deserialized from file." << std::endl << std::endl;
-
-  
-/-->
-
-	abcdef
-	196 octets deserialized from file.
-	"double": -3.14159,
-	202 octets deserialized from file.
- .
-
-										// Comments:
+	//-> -3.14159				// <-- Extract only what is necessary...
  
+	std::cout << inTxtFile.tellg() << " octets deserialized from file." << std::endl << std::endl;
+	//-> 202 octets deserialized from file.
+
+					// ****** Comments ******
 	myStream=std::stringstream();
 	myStream << "{/* This is a comment */ \"name\":\"Beno\u00EEt\"  /* This is an other comment */  }";
 	std::cout << untyped()( myStream )["name"] << std::endl << std::endl;
-
-  
-/-->
-
-	"Benoît"
- .
-
+	//-> "Benoît"
+ 
 	return(0);
 	}

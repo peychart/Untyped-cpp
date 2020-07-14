@@ -64,6 +64,9 @@ namespace noType
   untyped ( size_t s, void const * ); // 15
   untyped ( untyped        const & );
   untyped ( std::istream         & );
+  template<typename T> untyped                    ( T const &v )                {for(auto x : v) operator[](vector().size())=x;};
+  template<typename T> untyped                    ( std::map<std::string,T>  const &v )
+                                                                                {for(auto x : v) operator[](x.first)=x.second;};
 
   virtual ~untyped() {clear();};
 
