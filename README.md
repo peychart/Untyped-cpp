@@ -93,12 +93,13 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	//-> {"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
  
 	std::vector<std::string> myVector={ "s10","s11","s12","s13" };
-	myJson = myVector;				// <-- From a std::vector...
+	myJson = myVector;						// <-- From a std::vector...
 	std::cout << myJson << std::endl;
 	//-> ["s10","s11","s12","s13"]
  
-	std::map<std::string,untyped> myMap={ {"myStr1",myVector}, {"myStr2",myVector}, {"myStr3",myVector}, {"myStr4",myVector} };
-	myJson = myMap;					// <-- From a std::map...
+	std::map<std::string,untyped> myMap={ {"myStr1",myVector}, {"myStr2",myVector}, {"myStr3",myVector} };
+	myJson = myMap;							// <-- From a std::map...
+	myJson += std::pair<std::string,untyped>{"myStr4",myVector};	// <-- From a std::pair...
 	std::cout << myJson << std::endl;
 	//-> {"myStr1":["s10","s11","s12","s13"],"myStr2":["s10","s11","s12","s13"],"myStr3":["s10","s11","s12","s13"],"myStr4":["s10","s11","s12","s13"]}
 
@@ -158,39 +159,40 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
  
  
 					// ****** Indented output ******
-	myJson.prettyJsonMode();
+
+	myJson.prettyJsonMode(2); // <-- default tab size is 1 if no arg...
 
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false
 	std::cout << myJson(myStream) << std::endl;
 	//->
 	{
-	 "array": [
-	  -10,
-	  -11,
-	  -12,
-	  -13
-	 ],
-	 "bool": true,
-	 "char": 'a',
-	 "double": -3.14159,
-	 "empty": "",
-	 "int": 15,
-	 "objectArray": [
-	  {
-	   "o1": false
-	   "o2": true
-	  },
-	  {
-	   "o1": true
-	   "o2": true
-	  },
-	  {
-	   "o1": true
-	   "o2": false
-	  }
-	 ],
-	 "string": "abcdef",
-	 "void": null
+	  "array": [
+	    -10,
+	    -11,
+	    -12,
+	    -13
+	  ],
+	  "bool": true,
+	  "char": 'a',
+	  "double": -3.14159,
+	  "empty": "",
+	  "int": 15,
+	  "objectArray": [
+	    {
+	      "o1": false
+	      "o2": true
+	    },
+	    {
+	      "o1": true
+	      "o2": true
+	    },
+	    {
+	      "o1": true
+	      "o2": false
+	    }
+	  ],
+	  "string": "abcdef",
+	  "void": null
 	}
  
 									// in/from FILE:
