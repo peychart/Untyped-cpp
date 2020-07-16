@@ -117,18 +117,12 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	myJson["array"][0] = -10;
 	myJson["empty"] = untyped();
 	std::cout << myJson << std::endl;
-	//-> {"array1":[10,11,12,13],"array2":[10,11,12,23],"array3":[10,11,32,13],"array4":[10,41,12,13]}
+	//-> {"array":[-10,-11,-12,-13],"bool":true,"char":'a',"float":-3.14159,"empty":null,"int":15,"string":"abcdef"}
  
  
 	std::stringstream       myStream( std::stringstream::in | std::stringstream::out );
 
-							// from std::string to std::stream
-	untyped().deserializeJson("[ 4 ,-5,   2 ]").serializeJson(o);
-	std::string myString( myStream.str() );
-	std::cout << "Deserialize and re-serialize from/to strings: " << myString << std::endl;
-	//->Deserialize and re-serialize from/to strings: [4,-5,2]
- 
-							// from std::stream
+					// Deserialize from a std::stream:
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
 	std::cout << myJson.deserializeJson( myStream )  << std::endl;
@@ -141,21 +135,51 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	//-> My object 'myJson["objectArray"][2]["o2"]' is: false
 	//...
  
- 
-	std::cout << myJson.deserializeJson("[0,1,2,3]") << std::endl;	// From std::string
-	//-> [0,1,2,3]
- 
-	std::cout << myJson("[0,-1,-2,-3]")              << std::endl;	// <-- the same thing, with a short syntax...
-	//-> [0,-1,-2,-3]
- 
-	std::cout << myJson[2]                           << std::endl;	// check... ;-)
-	//-> -2
- 
- 
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
 	std::cout << "My object 'objectArray' is: " << untyped()( myStream )["objectArray"] << std::endl;
 	//-> My object 'objectArray' is: [{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
+ 
+ 
+					// From a C string (or std::string)
+	std::cout << myJson.deserializeJson("[0,1,2,3]") << std::endl;
+	//-> [0,1,2,3]
+ 
+					// <-- the same thing, with a short syntax...
+	std::cout << myJson("[0,-1,-2,-3]")              << std::endl;
+	//-> [0,-1,-2,-3]
+
+	// *** WARNING *** --> Different from: untyped myJson("[0,-1,-2,-3]"), a simple initialisation from a C string ; so:
+	{	untyped tmp( "[0,-1,-2,-3]" );			// <-- init with a C string
+		std::cout << tmp << std::endl;			// <-- std::string
+		//-> "[0,-1,-2,-3]"
+		std::cout << tmp.string().at(1) << std::endl;	// <-- check
+		//-> 0
+		std::cout << "c_str()=" << tmp.c_str() << std::endl;
+		//-> c_str()=[0,-1,-2,-3]
+ 
+		tmp( tmp );					// <-- deserialisation from a std::string...
+ 
+		std::cout << tmp << std::endl;			// <-- std::vector
+		//-> [0,-1,-2,-3]
+		std::cout << tmp.vector().at(1) << std::endl;	// <-- check
+		//-> -1
+		std::cout << "Here: c_str()=" << tmp.c_str() << std::endl;
+		//-> Here: c_str()=
+		std::cout << "but: serializeJson().c_str()=" << tmp.serializeJson().c_str() << std::endl;
+		//-> But: serializeJson().c_str()=[0,-1,-2,-3]
+	}
+ 
+ 
+					// From std::string to std::stream
+	untyped().deserializeJson("[ 4 ,-5,   2 ]").serializeJson( myStream );
+	std::cout << myStream.str() << std::endl;
+	//-> [4,-5,2]
+ 
+					// From std::string to std::string:
+	std::cout << untyped().deserializeJson("[ 4 ,-5,   2 ]").serializeJson() << std::endl;
+	//-> "[4,-5,2]"
+ 
  
  
 					// ****** Indented output ******

@@ -32,7 +32,7 @@
 
 namespace noType
 {
- class untyped : public std::vector<untyped>, public std::map<std::string, untyped>, public std::string
+ class untyped : private std::vector<untyped>, private std::map<std::string, untyped>, private std::string
  {  static unsigned short json, tabSize;
 
  protected:
@@ -82,7 +82,10 @@ namespace noType
   inline untyped&                     clearVector ( void )                      {vectorType::clear(); return *this;};
   inline untyped&                     clearMap    ( void )                      {mapType::clear();    return *this;};
   inline char const *                 data        ( void )                const {return std::string::data();};
+  inline char const *                 c_str       ( void )                const {return std::string::c_str();};
   untyped&                            erase       ( size_t p, size_t l=-1L )    {if(size() && !_type) std::string::erase(p, l); return *this;};
+
+  inline std::string&                 string      ( void )                      {return (*((std::string*)this));};
   inline vectorType&                  vector      ( void )                      {return (*((vectorType*)this));};
   inline untyped&                     at          ( size_t i )                  {return vectorType::at(i);};
   inline mapType&                     map         ( void )                      {return (*((mapType*)this));};
@@ -167,7 +170,8 @@ namespace noType
   inline untyped&                     operator[]  ( std::string s )             {mapType::iterator it=mapType::find(s); if(it!=mapType::end()) return (it->second); return (mapType::operator[](s)=untyped());};
 
   virtual untyped&                    serialize       ( std::ostream & );
-  virtual untyped&                    serializeJson   ( std::ostream &o )       {size_t b(untyped::json); jsonMode(); o << *this; untyped::json=b; return *this;};
+  virtual untyped&                    serializeJson   ( std::ostream &o )       {size_t b(untyped::json); if(isBinaryMode()) jsonMode(); o << *this; untyped::json=b; return *this;};
+  inline std::string                  serializeJson   ( void )                  {std::stringstream o; serializeJson(o); return o.str();};
 
   virtual untyped&                    deserialize     ( std::string  s )        {std::istringstream i(s); return(isJsonMode() ?deserializeJson(i) :deserialize(i));};
   virtual untyped&                    deserialize     ( std::istream & );
