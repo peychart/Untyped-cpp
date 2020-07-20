@@ -29,6 +29,7 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	# undef out
  
 	#include "untyped.h"
+	#include <list>		// if needed...
  
 	int main() {			// ****** Intuitive syntax ******
  
@@ -49,9 +50,22 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" )	<< std::endl;
 	//-> Json		// <-- std::string
  
- 
-	myJson.jsonMode();	// <-- JSON format management again...
- 
+	myJson("								\
+	{									\
+	    \"name\":        \"Armstrong\",					\
+	    \"firstname\":   \"Neil\",						\
+	    \"birthday\":  { \"year\" : 1930, \"month\" : 8, \"day\": 5 },	\
+	    \"profession\":[ \"pilot\", \"engineer\", \"astronaut\" ],		\
+	    \"born in\":     \"Wapakoneta - Ohio\",				\
+	    \"hobbies\": [							\
+	        \"astronomy\",							\
+	        \"X-15\",							\
+	        \"First Man to Walk on the Moon\"				\
+	    ]									\
+	}									\
+	");
+	std::cout << myJson["birthday"]["year"] + 39 << std::endl;
+	//-> 1969
  
  
 				// ****** Implicit or explicit cast ******
@@ -119,10 +133,20 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	std::cout << myJson << std::endl;
 	//-> {"array":[-10,-11,-12,-13],"bool":true,"char":'a',"float":-3.14159,"empty":null,"int":15,"string":"abcdef"}
  
+							// From a std::pair
+	std::cout << untyped(std::pair<std::string,double>{"pi", 3.14159}).serializeJson() << std::endl;
+	//-> {"pi":3.14159}
+ 
+							// From a std::list, and others....
+	myJson = std::list<int>{2,-1,-3,4};
+	std::cout << myJson << std::endl << std::endl;
+	//-> [2,-1,-3,4]
+ 
+ 
+					// Deserialize from a std::stream:
  
 	std::stringstream       myStream( std::stringstream::in | std::stringstream::out );
 
-					// Deserialize from a std::stream:
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
 	std::cout << myJson.deserializeJson( myStream )  << std::endl;
@@ -167,7 +191,7 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 		std::cout << "Here: c_str()=" << tmp.c_str() << std::endl;
 		//-> Here: c_str()=
 		std::cout << "but: serializeJson().c_str()=" << tmp.serializeJson().c_str() << std::endl;
-		//-> But: serializeJson().c_str()=[0,-1,-2,-3]
+		//-> but: serializeJson().c_str()=[0,-1,-2,-3]
 	}
  
  

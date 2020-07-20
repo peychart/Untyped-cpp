@@ -23,7 +23,7 @@
 #include "untyped.h"
 
 namespace noType
-{ unsigned short untyped::json = 0, untyped::tabSize = 1;
+{ unsigned short untyped::json = 0, untyped::tabSize = 0;
 
   untyped::untyped()                          : _type( 0) {
   }
@@ -320,10 +320,10 @@ namespace noType
   }
 
   std::ostream& operator<< ( std::ostream &out, untyped::mapType const &that ) {
-    out  << '{'; untyped::_jsonINCR(); untyped::_jsonNL(out);
+    out  << '{'; untyped::_jsonINCR();   untyped::_jsonNL(out);
     for( untyped::mapType::const_iterator it=that.begin(); it!=that.end(); ) {
       untyped::_jsonTAB(out);
-      out << '\"' << it->first << "\":"; if(untyped::json>1) out << " ";
+      out << '\"' << it->first << "\":"; untyped::_jsonSP(out);
       out << (it->second);
       if(++it!=that.end())  {out << ','; untyped::_jsonNL(out);}
     } untyped::_jsonNL(out); untyped::_jsonDECR(); untyped::_jsonTAB(out);
@@ -332,7 +332,7 @@ namespace noType
   }
 
   std::ostream& operator<< ( std::ostream &out, untyped::vectorType const &that ) {
-    out << '['; untyped::_jsonINCR(); untyped::_jsonNL(out);
+    out << '['; untyped::_jsonINCR();    untyped::_jsonNL(out);
     for( untyped::vectorType::const_iterator it=that.begin(); it!=that.end(); ) {
       untyped::_jsonTAB(out);
       out << *it;
@@ -416,7 +416,7 @@ namespace noType
   }
 
   void untyped::_getJsonComment( std::istream &in, char &c ) {
-    bool ml, exit=false;
+    bool ml, exit(false);
     if( in.read( &c, 1 ) && ((ml=(c=='*')) || c=='/') ) {
       while ( c && in.read( &c, 1 ) ) switch( c ) {
         case '\n': if( !ml ) return; exit=false;  break;
@@ -558,7 +558,7 @@ namespace noType
             ret[s] = _getJsonValue(in, c);
             next=0; if( c==',' ) next++;
     }   } }
-    return( c ?ret : _exitJsonObject(in, '}') );
+    return( c ?ret :untyped() );
   }
 
   untyped& untyped::deserializeJson( std::istream &in ) { //See: https://www.json.org/json-fr.html

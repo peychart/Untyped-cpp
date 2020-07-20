@@ -36,7 +36,7 @@ namespace noType
  {  static unsigned short json, tabSize;
 
  protected:
-  typedef std::pair<std::string, untyped>  typePair;
+  typedef std::pair<std::string, untyped>  pairType;
   typedef std::vector<untyped>             vectorType;
   typedef std::map<std::string, untyped>   mapType;
   typedef unsigned char                    uchar;
@@ -83,7 +83,6 @@ namespace noType
   inline untyped&                     clearMap    ( void )                      {mapType::clear();    return *this;};
   inline char const *                 data        ( void )                const {return std::string::data();};
   inline char const *                 c_str       ( void )                const {return std::string::c_str();};
-  untyped&                            erase       ( size_t p, size_t l=-1L )    {if(size() && !_type) std::string::erase(p, l); return *this;};
 
   inline std::string&                 string      ( void )                      {return (*((std::string*)this));};
   inline vectorType&                  vector      ( void )                      {return (*((vectorType*)this));};
@@ -166,14 +165,17 @@ namespace noType
   template<class T> inline untyped    operator|   ( T const &that )       const {return  operator| ( untyped( that ) );};
   inline untyped                      operator|   ( untyped const &that ) const {return  untyped( *this ).operator|=( that );};
 
-  inline untyped&                     operator[]  ( size_t n )                  {for(size_t i(vectorSize()); i<=n; i++) {vectorType::push_back(untyped());} return at(n);};
-  inline untyped&                     operator[]  ( std::string s )             {mapType::iterator it=mapType::find(s); if(it!=mapType::end()) return (it->second); return (mapType::operator[](s)=untyped());};
+  inline untyped&                     operator[]  ( size_t n )                  {for(size_t i(vectorSize()); i<=n; i++) vectorType::push_back(untyped()); return at(n);};
+  inline untyped&                     operator[]  ( std::string s )             {mapType::iterator it=mapType::find(s); return( (it!=mapType::end()) ?(it->second) :(mapType::operator[](s)=untyped()) );};
 
   virtual untyped&                    serialize       ( std::ostream & );
-  virtual untyped&                    serializeJson   ( std::ostream &o )       {size_t b(untyped::json); if(isBinaryMode()) jsonMode(); o << *this; untyped::json=b; return *this;};
-  inline std::string                  serializeJson   ( void )                  {std::stringstream o; serializeJson(o); return o.str();};
+  virtual untyped&                    serializeJson   ( std::ostream &o )       {return serializePrettyJson( o, 0 );};
+  virtual untyped&                    serializePrettyJson( std::ostream &o, unsigned short v=1 )
+                                                                                {unsigned short b(untyped::json),t(untyped::tabSize); prettyJsonMode(v); o << *this; if((untyped::json=b)) prettyJsonMode(t); return *this;};
+  inline std::string                  serializeJson   ( void )                  {std::stringstream o; serializePrettyJson( o, 0 ); return o.str();};
+  inline std::string                  serializePrettyJson( unsigned short v=1 ) {std::stringstream o; serializePrettyJson( o, v ); return o.str();};
 
-  virtual untyped&                    deserialize     ( std::string  s )        {std::istringstream i(s); return(isJsonMode() ?deserializeJson(i) :deserialize(i));};
+  virtual untyped&                    deserialize     ( std::string  s )        {std::istringstream i(s); return(isBinaryMode() ?deserialize(i) :deserializeJson(i));};
   virtual untyped&                    deserialize     ( std::istream & );
   virtual untyped&                    deserializeJson ( std::string  s )        {std::istringstream i(s); return deserializeJson(i);};
   virtual untyped&                    deserializeJson ( std::istream & );
@@ -183,11 +185,11 @@ namespace noType
   friend std::ostream&                operator<<      ( std::ostream &, untyped const & );
   friend std::ostream&                operator<<      ( std::ostream &, mapType const & );
   friend std::ostream&                operator<<      ( std::ostream &, vectorType const & );
-  friend std::ostream&                operator<<      ( std::ostream &out, typePair const &that ) {return out << that.first << ": " << that.second;};
+  friend std::ostream&                operator<<      ( std::ostream &out, pairType const &that ) {return out << that.first << ": " << that.second;};
 
   inline bool                         isBinaryMode    ( void )            const {return( !untyped::json );};
   inline bool                         isJsonMode      ( void )            const {return(  untyped::json );};
-  inline bool                         isPrettyJsonMode( void )            const {return(  untyped::json > 0 );};
+  inline bool                         isPrettyJsonMode( void )            const {return(  untyped::tabSize );};
   inline void                         binaryMode      ( void )                  {untyped::json=untyped::tabSize=0;};
   inline void                         jsonMode        ( void )                  {prettyJsonMode(0);};
   inline void                         prettyJsonMode  ( short v=1 )             {untyped::json=1; untyped::tabSize=(v<0 ?0 :v);};
@@ -234,11 +236,11 @@ namespace noType
   static void                 _getJsonComment ( std::istream &, char & );
   static inline void          _jsonTAB        ( std::ostream &o )               {if(untyped::json) for(unsigned short i(untyped::json-1); i; i--) o.write(" ", 1);};
   static inline void          _jsonNL         ( std::ostream &o )               {if(untyped::tabSize) o.write("\n", 1);};
+  static inline void          _jsonSP         ( std::ostream &o )               {if(untyped::tabSize) o.write(" ", 1);};
   static inline void          _jsonINCR       ( void )                          {if(untyped::json) untyped::json+=untyped::tabSize;};
   static inline void          _jsonDECR       ( void )                          {if(untyped::json>untyped::tabSize) untyped::json-=untyped::tabSize;};
 
   static inline bool          _isWhiteSpace   ( char &c )                       {if(c==' ' || c=='\t' || c=='\r' || c=='\n') return true; return false;};
-  static inline untyped       _exitJsonObject ( std::istream &in,char x)        {char c;while(in.read(&c, 1) && c!=x); return untyped();};
  };
 }
 using namespace noType;
