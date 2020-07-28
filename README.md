@@ -152,17 +152,17 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
 	std::cout << myJson.deserializeJson( myStream )  << std::endl;
 	//-> {"array":[-10,-11,-12,-13],"bool":true,"char":'a',"double":-3.14159,"empty":"","int":15,"objectArray":[{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}],"string":"abcdef","void":null}
   
-	std::cout << "My object 'myJson[\"objectArray\"][1][\"o2\"]' is: " << myJson["objectArray"][1]["o2"] << std::endl;
-	//-> My object 'myJson["objectArray"][1]["o2"]' is: true
+	std::cout << myJson["objectArray"][1]["o2"] << std::endl;
+	//-> true
  
-	std::cout << "My object 'myJson[\"objectArray\"][2][\"o2\"]' is: " << myJson["objectArray"][2]["o2"] << std::endl;
-	//-> My object 'myJson["objectArray"][2]["o2"]' is: false
+	std::cout << myJson["objectArray"][2]["o2"] << std::endl;
+	//-> false
 	//...
  
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false}],\"bool\":true,\"char\":'a',\"double\":-3.14159,\"empty\":\"\",\"void\":null,\"int\":15,\"string\":\"abcdef\"}";
  
-	std::cout << "My object 'objectArray' is: " << untyped()( myStream )["objectArray"] << std::endl;
-	//-> My object 'objectArray' is: [{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
+	std::cout << untyped()( myStream )["objectArray"] << std::endl;
+	//-> [{"o1":false,"o2":true},{"o1":true,"o2":true},{"o1":true,"o2":false}]
  
  
 					// From a C string (or std::string)
@@ -208,7 +208,7 @@ Below, examples of use (here, actual use -> https://github.com/peychart/WiFiPowe
  
 					// ****** Indented output ******
 
-	myJson.prettyJsonMode(2); // <-- default tab size is 1 if no arg...
+	myJson.prettyJsonMode(2); // <-- default tab size is 1 when no arg...
 
 	myStream  << "{\"array\":[-10,-11,-12,-13], \"objectArray\" : [{\"o1\":false},{\"o2\":true} , {\"o3\":false
 	std::cout << myJson(myStream) << std::endl;
