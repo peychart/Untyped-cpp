@@ -23,7 +23,7 @@
 #include "untyped.h"
 
 namespace noType
-{ unsigned short untyped::json = 0, untyped::tabSize = 0;
+{ unsigned short untyped::JSON = 0, untyped::tabSize = 0;
 
   untyped::untyped()                          : _type( 0) {
   }
@@ -92,11 +92,23 @@ namespace noType
     _set( s, reinterpret_cast<char const *>( v ) );
   }
 
-  untyped::untyped( untyped const &v )                    {
+  untyped::untyped( pairType   const & that ) : _type( 0) {
+    operator[](that.first)=that.second;
+  }
+
+  untyped::untyped( vectorType const & that ) : _type( 0) {
+    for(auto &x :that) operator[](vectorSize())=x;
+  }
+
+  untyped::untyped( mapType    const & that ) : _type( 0)  {
+    for(auto &x :that) operator[](x.first)=x.second;
+  }
+
+  untyped::untyped( untyped const &v )                     {
     assign(v);
   }
 
-  untyped::untyped( std::istream &in )                    {
+  untyped::untyped( std::istream &in )                     {
     deserialize( in );
   }
 
@@ -281,25 +293,23 @@ namespace noType
   }
 
   std::ostream& operator<<( std::ostream &out, untyped const &that ) {
-    if ( that.isJsonMode() && ((untyped::mapType)that).size() ) {
-      out << ((untyped::mapType)that);
-      return out;
-    }if( that.isJsonMode() && ((untyped::vectorType)that).size() ){
-      out << ((untyped::vectorType)that);
-      return out;
-    }switch( that._type ) {
+    if( that.isJson() && ((untyped::mapType)that).size() )
+      return out << (untyped::mapType)that;
+    if( that.isJson() && ((untyped::vectorType)that).size() )
+      return out << (untyped::vectorType)that;
+    switch( that._type ){
       case  1:
-        if( that.isJsonMode() )
+        if( that.isJson() )
               out << (that.value<bool>() ?"true" :"false");
-        else {out << static_cast<bool>(that.value<bool>() );}         break;
+        else  out << static_cast<bool>(that.value<bool>() );          break;
       case  2:
-        if( that.isJsonMode() ) {out << '\'';};
+        if( that.isJson() ) out << '\'';
         out << static_cast<char>(that.value<char>() );
-        if( that.isJsonMode() ) {out << '\'';};                       break;
+        if( that.isJson() ) out << '\'';                              break;
       case  3:
-        if( that.isJsonMode() ) {out << '\'';};
+        if( that.isJson() ) out << '\'';
         out << static_cast<wchar_t >(that.value<wchar_t >() );
-        if( that.isJsonMode() ) {out << '\'';};                       break;
+        if( that.isJson() ) out << '\'';                              break;
       case  4: out << static_cast<int8_t  >(that.value<int8_t  >() ); break;
       case  5: out << static_cast<uint8_t >(that.value<uint8_t >() ); break;
       case  6: out << static_cast<int16_t >(that.value<int16_t >() ); break;
@@ -311,33 +321,32 @@ namespace noType
       case 12: out << static_cast<float   >(that.value<float   >() ); break;
       case 13: out << static_cast<double  >(that.value<double  >() ); break;
       case 15:
-        if( that.isJsonMode() ) {out << '"';};
+        if( that.isJson() ) out << '"';
         out.write( that.data(), that.size() );
-        if( that.isJsonMode() ) {out << '"';};
-        break;
-      default: if( that.isJsonMode() ) out.write( "null", 4 );
-    } return out;
+        if( that.isJson() ) out << '"';                               break;
+      default: if( that.isJson() ) out.write( "null", 4 );
+    }return out;
   }
 
   std::ostream& operator<< ( std::ostream &out, untyped::mapType const &that ) {
-    out  << '{'; untyped::_jsonINCR();   untyped::_jsonNL(out);
+    out  << '{';
+    untyped::_jsonINCR(); untyped::_jsonNL(out);
     for( untyped::mapType::const_iterator it=that.begin(); it!=that.end(); ) {
-      untyped::_jsonTAB(out);
-      out << '\"' << it->first << "\":"; untyped::_jsonSP(out);
-      out << (it->second);
-      if(++it!=that.end())  {out << ','; untyped::_jsonNL(out);}
-    } untyped::_jsonNL(out); untyped::_jsonDECR(); untyped::_jsonTAB(out);
+      untyped::_jsonTAB(out); out << '\"' << it->first << "\":";
+      untyped::_jsonSP (out); out << (it->second);
+      if(++it!=that.end())   {out << ','; untyped::_jsonNL(out);}
+    }untyped::_jsonNL(out); untyped::_jsonDECR(); untyped::_jsonTAB(out);
     out << '}';
     return out;
   }
 
   std::ostream& operator<< ( std::ostream &out, untyped::vectorType const &that ) {
-    out << '['; untyped::_jsonINCR();    untyped::_jsonNL(out);
+    out << '[';
+    untyped::_jsonINCR(); untyped::_jsonNL(out);
     for( untyped::vectorType::const_iterator it=that.begin(); it!=that.end(); ) {
-      untyped::_jsonTAB(out);
-      out << *it;
-      if(++it!=that.end())  {out << ','; untyped::_jsonNL(out);}
-    } untyped::_jsonNL(out); untyped::_jsonDECR(); untyped::_jsonTAB(out);
+      untyped::_jsonTAB(out); out << *it;
+      if(++it!=that.end())   {out << ','; untyped::_jsonNL(out);}
+    }untyped::_jsonNL(out); untyped::_jsonDECR(); untyped::_jsonTAB(out);
     out << ']';
     return out;
   }
@@ -347,7 +356,7 @@ namespace noType
     out.write( reinterpret_cast<char*>(&type), sizeof(uchar) );
   }
 
-  untyped& untyped::serialize( std::ostream &out ) { if( isJsonMode() ) return serializeJson( out );
+  untyped& untyped::serialize( std::ostream &out ) { if( isJson() ) return serializeJson( out );
     char meta(0);
     if( vectorSize()) {
       if( mapSize() )     meta=1;
@@ -371,11 +380,11 @@ namespace noType
       case 15: _writeSize( out, this->size() ); out.write( this->data(), this->size() );
     }if ( meta == 1 || meta == 2 ) {
       _writeSize( out, this->vectorSize() );
-      for( auto x : vector() )
+      for( auto &x : vector() )
         x.serialize( out );
     }if ( meta == 1 || meta == 3 ) {
       _writeSize( out, this->mapSize() );
-      for( auto x : map() ) {
+      for( auto &x : map() ) {
         untyped( x.first ).serialize( out );
         x.second.serialize( out );
     } }
@@ -389,11 +398,12 @@ namespace noType
     }return type;
   }
 
-  untyped& untyped::deserialize( std::istream &in ){ if( isJsonMode() ) return deserializeJson( in );
+  untyped& untyped::deserialize( std::istream &in ){ if( isJson() ) return deserializeJson( in );
     char c; uchar meta;
     size_t len;
     std::string::clear();
     switch( (_type=_readTypeAndStructure( in, meta )) ) {
+      case  0: break;
       case  1: for(size_t i(0); i<sizeof(bool    ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
       case  2: for(size_t i(0); i<sizeof(char    ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
       case  3: for(size_t i(0); i<sizeof(wchar_t ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
@@ -408,6 +418,7 @@ namespace noType
       case 12: for(size_t i(0); i<sizeof(float   ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
       case 13: for(size_t i(0); i<sizeof(double  ) && in.read(&c, sizeof(char)); i++ ) std::string::operator+=(c); ntoh( *(std::string*)this ); break;
       case 15: _readSize( in, len ); while( len--  && in.read(&c, sizeof(char)) ) std::string::operator+=(c); break;
+      default: return *this;
     }switch( meta ) {
       case 1: clearVector(); _readSize(in, len); while(len--)  vector().push_back( untyped().deserialize( in ) );                                 // read dataVector...
       case 3: clearMap();    _readSize(in, len); while(len--) {untyped d; d.deserialize( in ); operator[](d)=untyped().deserialize( in );} break; // read dataMap
@@ -419,9 +430,9 @@ namespace noType
     bool ml, exit(false);
     if( in.read( &c, 1 ) && ((ml=(c=='*')) || c=='/') ) {
       while ( c && in.read( &c, 1 ) ) switch( c ) {
-        case '\n': if( !ml ) return; exit=false;  break;
-        case '*' : if( ml ) exit=true;            break;
-        case '/' : if(exit) return;               break;
+        case '\n': if(!ml ) return; exit=false;  break;
+        case '*' : if( ml ) exit=true;           break;
+        case '/' : if(exit) return;              break;
         default  : exit=false;
     } }
     else c='\0';
@@ -495,14 +506,15 @@ namespace noType
     for (bool stop(false); !stop && in.read( &c, 1 ); ) switch( c ) {
       case '"' : stop=true;
         break;
-      default  : if(isgraph(c) || _isWhiteSpace(c) || c>='\xA0') ret+=c;
-    } return(c ?ret :untyped() );
+      default  : 
+      if(isgraph(c) || _isWhiteSpace(c) || c>='\xA0') ret+=c;
+    }return(c ?ret :untyped() );
   }
 
-  untyped untyped::_getJsonValue( std::istream &in, char &c ) {
+  untyped untyped::_getJsonValue( std::istream &in, char &c, char readOneMore ) {
     do switch( c ) {
-      case '{' : return _getJsonObject(in, c);
-      case '[' : return _getJsonArray (in, c);
+      case '{' : return _getJsonObject(in, c, readOneMore=='}');
+      case '[' : return _getJsonArray (in, c, readOneMore==']');
       case '"' : return _getJsonString(in, c);
       case 't' :
       case 'T' :
@@ -517,22 +529,23 @@ namespace noType
     return untyped();
   }
 
-  untyped untyped::_getJsonArray( std::istream &in, char &c ) {
-    untyped ret, x;
+  untyped untyped::_getJsonArray( std::istream &in, char &c, bool readOneMore ) {
+    untyped ret;
     while ( c && c!=']' && in.read(&c, 1) ) switch(c) {
       case ']' : break;
       case ',' : break;
       case '/' : _getJsonComment(in, c); break;
-      default  : if( !_isWhiteSpace(c) ) {
-        x =_getJsonValue(in, c); ret[ret.vectorSize()] = x; x.clear();
-    } }
-    return( c ?ret.clearValue() :untyped() );
+      default  : if( !_isWhiteSpace(c) )
+        ret[ret.vectorSize()] = _getJsonValue(in, c, ']');
+    }if(readOneMore && c==']') in.read( &c, 1 );
+    return( c ?ret :untyped() );
   }
 
-  untyped untyped::_getJsonObject( std::istream &in, char &c ) {
+  untyped untyped::_getJsonObject( std::istream &in, char &c, bool readOneMore ) {
     uchar next(1); std::string s; untyped ret;
     while ( c && c!='}' && in.read( &c, 1 ) ) switch( c ) {
-      case '}' : break;
+      case '}' :
+        break;
       case ',' : if ( next++ ) c='\0';
         break;
       case '"' :
@@ -544,20 +557,15 @@ namespace noType
         break;
       case ':' : if(next++!=2) c='\0';
         break;
-      case '[' :
-        if ( next!=3 ) c='\0';
-        else {
-          ret[s] = _getJsonArray(in, c);
-          next=0;
-        } break;
       case '/' : _getJsonComment(in, c); break;
       default  :
         if( !_isWhiteSpace(c) ) {
-          if ( next!=3 ) c='\0';
-          else {
-            ret[s] = _getJsonValue(in, c);
-            next=0; if( c==',' ) next++;
-    }   } }
+          if ( next==3 ){
+                ret[s] = _getJsonValue(in, c, '}');
+                next = (c==',' ?1 :0);
+          }else c='\0';
+    }   }
+    if(readOneMore && c=='}') in.read( &c, 1 );
     return( c ?ret :untyped() );
   }
 
@@ -567,7 +575,5 @@ namespace noType
       case '[': (*this) = _getJsonArray (in, c); if(c!=']') clear(); return *this;
       case '/': _getJsonComment(in, c);          if(  !c  ) clear(); return *this;
       default : if( !_isWhiteSpace(c) )                              return *this;
-    }while(in.read(&c, 1));
-    return *this;
-  }
-}
+    }return *this;
+} }
