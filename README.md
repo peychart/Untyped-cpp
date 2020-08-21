@@ -21,7 +21,7 @@ Allows:
 * and, of course, a self-managed memory space (nothing more than a c++ flavor).
 
 
-Here, an intuitive example of HTML communication in an iot project : https://github.com/peychart/WiFiPowerStrip/blob/master/Next-version/webPage.cpp
+Here, an intuitive example of HTML communication in an iot project : https://github.com/peychart/WiFiPowerStrip/blob/master/C%2B%2Bsource/webPage.cpp
 
 Below, more examples of use:
 
