@@ -159,7 +159,7 @@ Below, more examples of use:
 	//-> [0,1,2,3]
  
 					// <-- the same thing, with a short syntax...
-	std::cout << myJson("[0,-1,-2,-3]")              << std::endl;
+	std::cout << myJson("[0,-1,-2,-4+1]")              << std::endl;
 	//-> [0,-1,-2,-3]
 
 	// *** WARNING *** --> Different from: untyped myJson("[0,-1,-2,-3]"), a simple initialisation from a C string ; so:
