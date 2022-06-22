@@ -52,7 +52,7 @@ Below, more examples of use:
 	std::cout << ( myJson + 's' + "on" - "aaa" - "aaa" )	<< std::endl;
 	//-> Json		// <-- std::string
  
-	myJson.json();
+	myJson.json();          // <-- Json format
 	myJson("								\
 	{									\
 	    \"name\":        \"Armstrong\",					\
