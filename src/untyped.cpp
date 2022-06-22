@@ -299,17 +299,17 @@ namespace noType
       return out << (untyped::vectorType)that;
     switch( that._type ){
       case  1:
-        if( that.isJson() )
+        if( that.isJson() ){
               out << (that.value<bool>() ?"true" :"false");
-        else  out << static_cast<bool>(that.value<bool>() );          break;
+        }else{out << static_cast<bool>(that.value<bool>() );}         break;
       case  2:
-        if( that.isJson() ) out << '\'';
+        if( that.isJson() ) {out << '\'';}
         out << static_cast<char>(that.value<char>() );
-        if( that.isJson() ) out << '\'';                              break;
+        if( that.isJson() ) {out << '\'';}                            break;
       case  3:
-        if( that.isJson() ) out << '\'';
+        if( that.isJson() ) {out << '\'';}
         out << static_cast<wchar_t >(that.value<wchar_t >() );
-        if( that.isJson() ) out << '\'';                              break;
+        if( that.isJson() ) {out << '\'';}                            break;
       case  4: out << static_cast<int8_t  >(that.value<int8_t  >() ); break;
       case  5: out << static_cast<uint8_t >(that.value<uint8_t >() ); break;
       case  6: out << static_cast<int16_t >(that.value<int16_t >() ); break;
@@ -321,9 +321,9 @@ namespace noType
       case 12: out << static_cast<float   >(that.value<float   >() ); break;
       case 13: out << static_cast<double  >(that.value<double  >() ); break;
       case 15:
-        if( that.isJson() ) out << '"';
+        if( that.isJson() ) {out << '"';}
         out.write( that.data(), that.size() );
-        if( that.isJson() ) out << '"';                               break;
+        if( that.isJson() ) {out << '"';}                             break;
       default: if( that.isJson() ) out.write( "null", 4 );
     }return out;
   }
@@ -508,7 +508,7 @@ namespace noType
         break;
       default  : 
       if(isgraph(c) || _isWhiteSpace(c) || c>='\xA0') ret+=c;
-    }return(c ?ret :untyped() );
+    }return(c ?ret :ret.clear() );
   }
 
   untyped untyped::_getJsonValue( std::istream &in, char &c, char readOneMore ) {
@@ -538,7 +538,7 @@ namespace noType
       default  : if( !_isWhiteSpace(c) )
         ret[ret.vectorSize()] = _getJsonValue(in, c, ']');
     }if(readOneMore && c==']') in.read( &c, 1 );
-    return( c ?ret :untyped() );
+    return( c ?ret :ret.clear() );
   }
 
   untyped untyped::_getJsonObject( std::istream &in, char &c, bool readOneMore ) {
@@ -566,7 +566,7 @@ namespace noType
           }else c='\0';
     }   }
     if(readOneMore && c=='}') in.read( &c, 1 );
-    return( c ?ret :untyped() );
+    return( c ?ret :ret.clear() );
   }
 
   untyped& untyped::deserializeJson( std::istream &in ) { //See: https://www.json.org/json-fr.html
