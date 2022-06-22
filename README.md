@@ -36,7 +36,7 @@ Below, more examples of use:
 	int main() {			// ****** Intuitive syntax ******
  
 	untyped	myJson('j');
-	myJson.json();	// <-- JSON format management
+	myJson.json();	// <-- set the JSON format management
  
 	std::cout << myJson					<< std::endl;
 	//-> 'j'		// <-- type char
