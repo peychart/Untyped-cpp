@@ -112,7 +112,7 @@ Below, more examples of use:
 
  
 					// ****** Serialization ******
-	myJson.clear();
+	myJson.clear().json();
 	myJson["string"] = "abcdef";
 	myJson["char"] = 'a';
 	myJson["bool"] = true;
