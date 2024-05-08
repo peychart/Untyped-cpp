@@ -293,9 +293,9 @@ namespace noType
   }
 
   std::ostream& operator<<( std::ostream &out, untyped const &that ) {
-    if( that.isJson() && ((untyped::mapType)that).size() )
+    if( that.isJson() && that.mapSize() )
       return out << (untyped::mapType)that;
-    if( that.isJson() && ((untyped::vectorType)that).size() )
+    if( that.isJson() && that.vectorSize() )
       return out << (untyped::vectorType)that;
     switch( that._type ){
       case  1:
