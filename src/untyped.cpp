@@ -325,14 +325,16 @@ namespace noType
         out.write( that.data(), that.size() );
         if( that.isJson() ) {out << '"';}                             break;
       default: if( that.isJson() ) out.write( "null", 4 );
-    }return out;
+    }
+   return out;
   }
 
   std::ostream& operator<< ( std::ostream &out, untyped::mapType const &that ) {
     out  << '{';
     untyped::_jsonINCR(); untyped::_jsonNL(out);
     for( untyped::mapType::const_iterator it=that.begin(); it!=that.end(); ) {
-      untyped::_jsonTAB(out); out << '\"' << it->first << "\":";
+      untyped::_jsonTAB(out);
+      out << '\"' << it->first << "\":";
       untyped::_jsonSP (out); out << (it->second);
       if(++it!=that.end())   {out << ','; untyped::_jsonNL(out);}
     }untyped::_jsonNL(out); untyped::_jsonDECR(); untyped::_jsonTAB(out);
